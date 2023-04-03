@@ -71,10 +71,35 @@ function getCustomerItem(customer) {
   const date_td = document.createElement("td");
   const time_td = document.createElement("th");
   const contacts = document.createElement("th");
+  const contacts_div = document.createElement("div");
   const actions_td = document.createElement("td");
   const delete_btn = document.createElement("a");
   const change_btn = document.createElement("a");
 
+  const keysContacts = Object.keys(customer.contacts);
+
+  for (let i = 0; i < keysContacts.length; i++) {
+
+
+    const info_p = document.createElement("p");
+    const info_text = customer.contacts[keysContacts[i]];
+    let contact = document.createElement("span");
+    if (keysContacts[i] == 'mob') {
+      contact.setAttribute('class', 'mob_ico');
+      contact.setAttribute('info', info_text);
+    }
+
+
+    info_p.innerHTML = info_text;
+    info_p.setAttribute('class', 'text_contact');
+
+    contact.append(info_p);
+    // info.append(info_p);
+
+    contacts_div.append(contact);
+    contacts.append(contact);
+    console.log(contact);
+  }
 
 
   const date_create = document.createElement("span");
@@ -122,7 +147,7 @@ function getCustomerItem(customer) {
   date_change.innerHTML = `${new Date(customer.updatedAt).toLocaleDateString('ru-RU')} `;
   time_change.innerHTML = `${updateHour}:${updateMinute}`;
 
-  contacts.innerHTML = '';
+
 
 
   date_td.append(date_create);
@@ -131,10 +156,12 @@ function getCustomerItem(customer) {
   time_td.append(date_change);
   time_td.append(time_change);
 
+
   table_list.append(id);
   table_list.append(fio);
   table_list.append(date_td);
   table_list.append(time_td);
+
   table_list.append(contacts);
   table_list.append(actions_td);
 
