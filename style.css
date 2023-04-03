@@ -1,15 +1,133 @@
+body {
+    background-color: #E5E5E5;
+    font-family: 'Open Sans', sans-serif;
+}
+
+header {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 19px;
+    letter-spacing: 0em;
+
+
+    background-color: #FFFFFF;
+    box-shadow: 0px 9.03012px 27.0904px rgba(176, 190, 197, 0.32), 0px 3.38629px 5.64383px rgba(176, 190, 197, 0.32);
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    min-height: 90px;
+}
+
+#main_filter {
+    min-width: 581px;
+    margin: 23px 0 23px 33px;
+}
+
+
+
+
+#main_logo {
+    margin: 20px;
+}
+
+#main_body {
+    margin: 20px;
+}
+
+#main_name {
+    text-align: left;
+    margin-top: 20px;
+    margin-bottom: 14px;
+}
+
+#table_data {
+    background-color: #FFFFFF;
+}
+
+
+.change_customer {
+    margin-right: 32px;
+    cursor: pointer;
+}
+
+.change_customer::before {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 13 13' fill='none'%3e%3cpath d='M0 10.5V13H2.5L9.87333 5.62662L7.37333 3.12662L0 10.5ZM11.8067 3.69329C12.0667 3.43329 12.0667 3.01329 11.8067 2.75329L10.2467 1.19329C9.98667 0.933291 9.56667 0.933291 9.30667 1.19329L8.08667 2.41329L10.5867 4.91329L11.8067 3.69329Z' fill='%239873FF'/%3e%3c/svg%3e");
+    width: 20px;
+    height: 20px;
+    left: 0;
+    content: '';
+    display: inline-block;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+
+.delete_customer {
+    cursor: pointer;
+}
+
+.delete_customer::before {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3e%3cg opacity='0.7' clip-path='url(%23clip0_224_1352)'%3e%3cpath d='M8 2C4.682 2 2 4.682 2 8C2 11.318 4.682 14 8 14C11.318 14 14 11.318 14 8C14 4.682 11.318 2 8 2ZM8 12.8C5.354 12.8 3.2 10.646 3.2 8C3.2 5.354 5.354 3.2 8 3.2C10.646 3.2 12.8 5.354 12.8 8C12.8 10.646 10.646 12.8 8 12.8ZM10.154 5L8 7.154L5.846 5L5 5.846L7.154 8L5 10.154L5.846 11L8 8.846L10.154 11L11 10.154L8.846 8L11 5.846L10.154 5Z' fill='%23F06A4D'/%3e%3c/g%3e%3cdefs%3e%3cclipPath id='clip0_224_1352'%3e%3crect width='16' height='16' fill='white'/%3e%3c/clipPath%3e%3c/defs%3e%3c/svg%3e");
+    width: 20px;
+    height: 20px;
+    left: 0;
+    content: '';
+    display: inline-block;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+
+
 .main_head {
     justify-content: space-between;
     margin-bottom: 8px;
 }
 
-.btn-add {
-    margin-right: 15px;
-    margin-left: 15px;
+#btn_add {
+    padding: 12.5px 26.5px 12.5px 26.5px;
+    border: 1px solid #9873FF;
+    color: #9873FF;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.table-bordered td,
+.table-bordered th {
+    border: none;
+    border-bottom: 1px solid #dee2e6;
+}
+
+
+#btn_add::before {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='23' height='16' viewBox='0 0 23 16' fill='none'%3e%3cpath d='M14.5 8C16.71 8 18.5 6.21 18.5 4C18.5 1.79 16.71 0 14.5 0C12.29 0 10.5 1.79 10.5 4C10.5 6.21 12.29 8 14.5 8ZM5.5 6V3H3.5V6H0.5V8H3.5V11H5.5V8H8.5V6H5.5ZM14.5 10C11.83 10 6.5 11.34 6.5 14V16H22.5V14C22.5 11.34 17.17 10 14.5 10Z' fill='%239873FF'/%3e%3c/svg%3e");
+    width: 23px;
+    height: 20px;
+    margin-right: 10px;
+    content: '';
+    display: inline-block;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+
+
+#main_add_div {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+thead {
+    color: #B0B0B0;
+}
+
+.table-bordered {
+    border: none;
 }
 
 .table thead th {
     vertical-align: baseline;
+    border: none;
 }
 
 .visible {
@@ -17,9 +135,7 @@
     transition: width 2s linear 1s;
 }
 
-.form-control {
-    display: inline-block;
-}
+
 
 .wrap {
     margin-bottom: 10px;
@@ -58,23 +174,7 @@
 }
 
 input::-webkit-input-placeholder {
-    opacity: 1;
-    transition: opacity 0.3s ease;
-}
-
-input::-moz-placeholder {
-    opacity: 1;
-    transition: opacity 0.3s ease;
-}
-
-input:-moz-placeholder {
-    opacity: 1;
-    transition: opacity 0.3s ease;
-}
-
-input:-ms-input-placeholder {
-    opacity: 1;
-    transition: opacity 0.3s ease;
+    color: #B0B0B0 !important;
 }
 
 input:focus::-webkit-input-placeholder {
