@@ -1,0 +1,98 @@
+.main_head {
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.btn-add {
+    margin-right: 15px;
+    margin-left: 15px;
+}
+
+.table thead th {
+    vertical-align: baseline;
+}
+
+.visible {
+    display: block !important;
+    transition: width 2s linear 1s;
+}
+
+.form-control {
+    display: inline-block;
+}
+
+.wrap {
+    margin-bottom: 10px;
+}
+
+
+.fa {
+    font-family: 'Font Awesome 5 Free';
+}
+
+.footer {
+    text-align: center;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.fa_sort {
+    color: gray;
+}
+
+#main_add_form {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: beige;
+    border-radius: 10px;
+    padding: 20px;
+    display: none;
+}
+
+#form_filter {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+}
+
+input::-webkit-input-placeholder {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+input::-moz-placeholder {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+input:-moz-placeholder {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+input:-ms-input-placeholder {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+input:focus::-webkit-input-placeholder {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+input:focus::-moz-placeholder {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+input:focus:-moz-placeholder {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+input:focus:-ms-input-placeholder {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
