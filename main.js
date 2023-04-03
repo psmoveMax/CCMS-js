@@ -68,12 +68,21 @@ function getCustomerItem(customer) {
   const table_list = document.createElement("tr");
   const id = document.createElement("td");
   const fio = document.createElement("th");
-  const time_create = document.createElement("th");
-  const time_change = document.createElement("th");
+  const date_td = document.createElement("td");
+  const time_td = document.createElement("th");
   const contacts = document.createElement("th");
   const actions_td = document.createElement("td");
   const delete_btn = document.createElement("a");
   const change_btn = document.createElement("a");
+
+
+
+  const date_create = document.createElement("span");
+  const time_create = document.createElement("span");
+
+  const date_change = document.createElement("span");
+  const time_change = document.createElement("span");
+
 
 
   change_btn.innerText = 'Изменить';
@@ -87,20 +96,45 @@ function getCustomerItem(customer) {
   delete_btn.setAttribute('onclick', `deleteCustomer(${customer.id})`);
   actions_td.append(delete_btn);
 
+  const createAt = new Date(customer.createdAt);
+  const createHour = String(createAt.getHours()).padStart(2, '0');
+  const createMinute = String(createAt.getMinutes()).padStart(2, '0');
+
+  const updateAt = new Date(customer.updatedAt);
+  const updateHour = String(updateAt.getHours()).padStart(2, '0');
+  const updateMinute = String(updateAt.getMinutes()).padStart(2, '0');
+
+
 
 
   id.innerHTML = `${customer.id}`;
   id.style = 'color: #B0B0B0';
   fio.innerHTML = `${customer.name} ${customer.surname} ${customer.lastname}`;
-  time_create.innerHTML = `${new Date(customer.createdAt).toLocaleDateString('ru-RU')}`;
-  time_change.innerHTML = `${new Date(customer.updatedAt).toLocaleDateString('ru-RU')}`;
+
+  date_create.setAttribute('class', 'date_span');
+  time_create.setAttribute('class', 'time_span');
+  date_create.innerHTML = `${new Date(customer.createdAt).toLocaleDateString('ru-RU')} `;
+  time_create.innerHTML = `${createHour}:${createMinute}`;
+
+
+  date_change.setAttribute('class', 'date_span');
+  time_change.setAttribute('class', 'time_span');
+  date_change.innerHTML = `${new Date(customer.updatedAt).toLocaleDateString('ru-RU')} `;
+  time_change.innerHTML = `${updateHour}:${updateMinute}`;
+
   contacts.innerHTML = '';
 
 
+  date_td.append(date_create);
+  date_td.append(time_create);
+
+  time_td.append(date_change);
+  time_td.append(time_change);
+
   table_list.append(id);
   table_list.append(fio);
-  table_list.append(time_create);
-  table_list.append(time_change);
+  table_list.append(date_td);
+  table_list.append(time_td);
   table_list.append(contacts);
   table_list.append(actions_td);
 

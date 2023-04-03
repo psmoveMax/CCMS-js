@@ -32,6 +32,24 @@ header {
     margin: 20px;
 }
 
+.date_span {
+    margin-right: 10px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 19px;
+
+}
+
+.time_span {
+    color: #B0B0B0;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 19px;
+
+}
+
 #main_body {
     margin: 20px;
 }
@@ -42,8 +60,19 @@ header {
     margin-bottom: 14px;
 }
 
+thead tr th {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+}
+
 #table_data {
     background-color: #FFFFFF;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 19px;
 }
 
 

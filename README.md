@@ -1,4 +1,8 @@
-# CCMS (customer contact management system)
+# CRM
+
+## alpha 0.2
+### Что нового?
+- Время создания и редактирования отображается в таблице
 
 ## pre-alpha 0.1
 ### Что нового?
