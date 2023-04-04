@@ -1,24 +1,82 @@
 [
     {
-        "id": "1234567890",
+        "id": "123456",
         "createdAt": "2021-02-03T13:07:29.554Z",
         "updatedAt": "2021-02-03T13:07:29.554Z",
         "name": "Василий",
         "surname": "Мостовой",
         "lastname": "Васильевич",
-        "contacts": {
-            "mob": "+79017461333"
-        }
+        "contacts": [
+            [
+                "mob",
+                "+7901746133"
+            ],
+            [
+                "email",
+                "testers@gmail.com"
+            ],
+            [
+                "facebook",
+                "facebook.com/001"
+            ],
+            [
+                "other",
+                "Twitter: @elonmusk"
+            ],
+            [
+                "other",
+                "Twitter: @elonmusk"
+            ],
+            [
+                "mob",
+                "+7901746133"
+            ],
+            [
+                "email",
+                "testers@gmail.com"
+            ],
+            [
+                "facebook",
+                "facebook.com/001"
+            ],
+            [
+                "other",
+                "Twitter: @elonmusk"
+            ],
+            [
+                "other",
+                "Twitter: @elonmusk"
+            ]
+        ]
     },
     {
-        "id": "1234567891",
+        "id": "123457",
         "createdAt": "2022-10-03T13:07:29.554Z",
         "updatedAt": "2022-11-03T13:07:29.554Z",
         "name": "Макс",
         "surname": "Лешкович",
         "lastname": "Юрьеевич",
-        "contacts": {
-            "mob": "+79223389069"
-        }
+        "contacts": [
+            [
+                "mob",
+                "+79223389069"
+            ],
+            [
+                "vk",
+                "vk.com/progertest"
+            ],
+            [
+                "mob",
+                "+996773224506"
+            ],
+            [
+                "mob",
+                "+79223389069"
+            ],
+            [
+                "vk",
+                "vk.com/progertest"
+            ]
+        ]
     }
 ]

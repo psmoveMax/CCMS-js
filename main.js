@@ -61,6 +61,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+function removeExtendedIco() {
+  console.log();
+}
 
 function getCustomerItem(customer) {
   const table = document.querySelector('#main_table')['tBodies'][0];
@@ -76,27 +79,57 @@ function getCustomerItem(customer) {
   const delete_btn = document.createElement("a");
   const change_btn = document.createElement("a");
 
+
+
   const keysContacts = Object.keys(customer.contacts);
 
+  contacts.setAttribute('style', 'width:140px');
+
+
+  console.log(customer.contacts);
   for (let i = 0; i < keysContacts.length; i++) {
 
 
-    const info_p = document.createElement("p");
-    const info_text = customer.contacts[keysContacts[i]];
+
+    const info_text = customer.contacts[i][1];
     let contact = document.createElement("span");
-    if (keysContacts[i] == 'mob') {
+
+
+
+
+    if (customer.contacts[i][0] == 'mob') {
       contact.setAttribute('class', 'mob_ico');
       contact.setAttribute('info', info_text);
+    } else if (customer.contacts[i][0] == 'email') {
+      contact.setAttribute('class', 'email_ico');
+      contact.setAttribute('info', info_text);
+    } else if (customer.contacts[i][0] == 'facebook') {
+      contact.setAttribute('class', 'facebook_ico');
+      contact.setAttribute('info', info_text);
+    } else if (customer.contacts[i][0] == 'vk') {
+      contact.setAttribute('class', 'vk_ico');
+      contact.setAttribute('info', info_text);
+    } else if (customer.contacts[i][0] == 'other') {
+      contact.setAttribute('class', 'other_ico');
+      contact.setAttribute('info', info_text);
+    }
+    if (keysContacts.length > 5 && i >= 4) {
+      contact.classList.add('class', 'invisible_ico');
+
+      if (i == 4) {
+        let extended_ico = document.createElement("span");
+        extended_ico.classList.add('extended_ico');
+        extended_ico.innerText = `+${keysContacts.length - i}`;
+        extended_ico.setAttribute('onclick', `removeExtendedIco()`);
+        contacts.append(extended_ico);
+      }
     }
 
 
-    info_p.innerHTML = info_text;
-    info_p.setAttribute('class', 'text_contact');
 
-    contact.append(info_p);
     // info.append(info_p);
 
-    contacts_div.append(contact);
+    // contacts_div.append(contact);
     contacts.append(contact);
     console.log(contact);
   }
