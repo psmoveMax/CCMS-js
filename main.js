@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function removeExtendedIco() {
-  console.log();
+  console.log(this.id);
 }
 
 function getCustomerItem(customer) {
@@ -74,7 +74,6 @@ function getCustomerItem(customer) {
   const date_td = document.createElement("td");
   const time_td = document.createElement("th");
   const contacts = document.createElement("th");
-  const contacts_div = document.createElement("div");
   const actions_td = document.createElement("td");
   const delete_btn = document.createElement("a");
   const change_btn = document.createElement("a");
@@ -85,7 +84,7 @@ function getCustomerItem(customer) {
 
   contacts.setAttribute('style', 'width:140px');
 
-
+  let arrayInvisibleContacts = Array();
   console.log(customer.contacts);
   for (let i = 0; i < keysContacts.length; i++) {
 
@@ -98,6 +97,7 @@ function getCustomerItem(customer) {
 
 
     if (customer.contacts[i][0] == 'mob') {
+      contact.setAttribute('id', '');
       contact.setAttribute('class', 'mob_ico');
       contact.setAttribute('info', info_text);
     } else if (customer.contacts[i][0] == 'email') {
@@ -114,13 +114,14 @@ function getCustomerItem(customer) {
       contact.setAttribute('info', info_text);
     }
     if (keysContacts.length > 5 && i >= 4) {
-      contact.classList.add('class', 'invisible_ico');
+      contact.classList.add('invisible_ico');
+      let extended_ico = document.createElement("span");
 
       if (i == 4) {
-        let extended_ico = document.createElement("span");
         extended_ico.classList.add('extended_ico');
         extended_ico.innerText = `+${keysContacts.length - i}`;
-        extended_ico.setAttribute('onclick', `removeExtendedIco()`);
+        extended_ico.setAttribute('onclick', `removeExtendedIco(${customer.id})`);
+
         contacts.append(extended_ico);
       }
     }
@@ -132,6 +133,8 @@ function getCustomerItem(customer) {
     // contacts_div.append(contact);
     contacts.append(contact);
     console.log(contact);
+
+
   }
 
 
