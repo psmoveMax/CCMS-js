@@ -111,7 +111,7 @@ thead tr th {
 
 .table td,
 .table th {
-    padding: 10px;
+    padding: 9px;
 }
 
 .mob_ico::before {
@@ -248,6 +248,7 @@ thead tr th {
 
 .extended_ico {
     text-align: center;
+    cursor: pointer;
     width: 16px;
     height: 26px;
     margin-right: 7px;
@@ -268,6 +269,32 @@ thead tr th {
     color: #9873FF;
     cursor: pointer;
     font-weight: 600;
+}
+
+#btn_save {
+    padding: 12.5px 26.5px 12.5px 26.5px;
+    border: 1px solid #9873FF;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    background: #9873FF;
+}
+
+
+.close_bottom {
+    text-decoration-line: underline !important;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.modal_bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .table-bordered td,
@@ -337,12 +364,57 @@ thead {
 }
 
 #main_add_form {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    background-color: beige;
-    border-radius: 10px;
-    padding: 20px;
+
+    padding: 25px 30px 25px 30px;
+}
+
+/* Модальный (фон) */
+.modal {
     display: none;
+    /* Скрыто по умолчанию */
+    position: fixed;
+    /* Оставаться на месте */
+    z-index: 1;
+    /* Сидеть на вершине */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Полная ширина */
+    height: 100%;
+    /* Полная высота */
+    overflow: auto;
+    /* Включите прокрутку, если это необходимо */
+    background-color: rgb(0, 0, 0);
+    /* Цвет запасной вариант */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Черный с непрозрачностью */
+    box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.15);
+}
+
+/* Модальное содержание/коробка */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    /* 15% сверху и по центру */
+
+    border: 1px solid #888;
+    width: 450px;
+    /* Может быть больше или меньше, в зависимости от размера экрана */
+}
+
+/* Кнопка закрытия */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 #form_filter {
@@ -350,6 +422,53 @@ thead {
     flex-wrap: nowrap;
     flex-direction: row;
 }
+
+
+#modal_name {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 25px;
+}
+
+.modal_header {
+    margin-bottom: 32px;
+}
+
+#modal_add_contacts {
+    display: none;
+}
+
+#modal_btn_contact {
+    text-align: center;
+    background: rgba(201, 198, 210, 0.3);
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+#btn_add_contact_add {
+    cursor: pointer;
+}
+
+.input-name {
+    position: relative;
+    display: inline-grid;
+    overflow: hidden;
+}
+
+.input-name>input[type=text] {
+    border: none;
+    border-bottom: 2px solid #C8C5D1;
+    outline: none;
+}
+
+
+
+.input-name>input[type=text]:focus+.underline-animation {
+    left: 0;
+}
+
+
 
 input::-webkit-input-placeholder {
     color: #B0B0B0 !important;

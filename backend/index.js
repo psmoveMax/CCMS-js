@@ -43,7 +43,7 @@ function drainJson(req) {
  * Проверяет входные данные и создаёт из них корректный объект клиента
  * @param {Object} data - Объект с входными данными
  * @throws {ApiError} Некорректные данные в аргументе (statusCode 422)
- * @returns {{ name: string, surname: string, lastname: string, contacts: object}} Объект клиента
+ * @returns {{ name: string, surname: string, lastname: string, contacts: array}} Объект клиента
  */
 function makeCustomerFromData(data) {
     const errors = [];
@@ -63,7 +63,6 @@ function makeCustomerFromData(data) {
     // проверяем, все ли данные корректные и заполняем объект ошибок, которые нужно отдать клиенту
     if (!customer.name) errors.push({ field: 'name', message: 'Не указано имя' });
     if (!customer.surname) errors.push({ field: 'surname', message: 'Не указана фамилия' });
-    if (!customer.lastname) errors.push({ field: 'lastname', message: 'Не указано отчество' });
 
 
     // если есть ошибки, то бросаем объект ошибки с их списком и 422 статусом
@@ -75,7 +74,7 @@ function makeCustomerFromData(data) {
 /**
  * Возвращает список клиентов из базы данных
  * @param {{ search: string }} [params] - Поисковая строка
- * @returns {{ id: string, name: string, surname: string, lastname: string, contacts: object }[]} Массив студентов
+ * @returns {{ id: string, name: string, surname: string, lastname: string, contacts: array }[]} Массив студентов
  */
 function getCustomerList(params = {}) {
     const customers = JSON.parse(readFileSync(DB_FILE) || '[]');
@@ -97,11 +96,13 @@ function getCustomerList(params = {}) {
  * Создаёт и сохраняет клиента в базу данных
  * @throws {ApiError} Некорректные данные в аргументе, клиент не создан (statusCode 422)
  * @param {Object} data - Данные из тела запроса
- * @returns {{ id: string, name: string, surname: string, lastname: string, contacts: object, createdAt: string, updatedAt: string }} Объект клиента
+ * @returns {{ id: string, name: string, surname: string, lastname: string, contacts: array, createdAt: string, updatedAt: string }} Объект клиента
  */
 function createCustomer(data) {
+    console.log(data);
     const newItem = makeCustomerFromData(data);
-    newItem.id = Date.now().toString();
+    console.log(newItem);
+    newItem.id = `1${Date.now().toString().substr('7', '5')}`;
     newItem.createdAt = newItem.updatedAt = new Date().toISOString();
     writeFileSync(DB_FILE, JSON.stringify([...getCustomerList(), newItem]), { encoding: 'utf8' });
     return newItem;
@@ -111,7 +112,7 @@ function createCustomer(data) {
  * Возвращает объект клиента по его ID
  * @param {string} itemId - ID студента
  * @throws {ApiError} Клиент с таким ID не найден (statusCode 404)
- * @returns {{ id: string, name: string, surname: string, lastname: string, contacts: object createdAt: string, updatedAt: string }} Объект клиента
+ * @returns {{ id: string, name: string, surname: string, lastname: string, contacts: array createdAt: string, updatedAt: string }} Объект клиента
  */
 function getCustomer(itemId) {
     const customer = getCustomerList().find(({ id }) => id === itemId);
@@ -125,7 +126,7 @@ function getCustomer(itemId) {
  * @param {{ name?: string, surname?: string, lastname?: string, contacts?: object }} data - Объект с изменяемыми данными
  * @throws {ApiError} клиент с таким ID не найден (statusCode 404)
  * @throws {ApiError} Некорректные данные в аргументе (statusCode 422)
- * @returns {{ id: string, name: string, surname: string, lastname: string, contacts: object, createdAt: string, updatedAt: string }} Объект клиента
+ * @returns {{ id: string, name: string, surname: string, lastname: string, contacts: array, createdAt: string, updatedAt: string }} Объект клиента
  */
 function updateCustomer(itemId, data) {
     const customers = getCustomerList();

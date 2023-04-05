@@ -1,51 +1,38 @@
 document.addEventListener("DOMContentLoaded", function () {
-  document.querySelector("#btn_add").addEventListener("click", (e) => {
+
+  document.querySelector('#btn_save').addEventListener("click", async e => {
     e.preventDefault();
-    document.querySelector("#main_add_form").classList.add("visible");
-  });
+    let name = document.getElementById('name').value.trim();
+    let surname = document.getElementById('surname').value.trim();
+    let lastname = document.getElementById('lastname').value.trim();
 
-  document.querySelector("#btn_form_close").addEventListener("click", () => {
-    document.querySelector("#main_add_form").classList.remove("visible");
-    document.querySelectorAll("input").forEach((el) => (el.value = ""));
-  });
+    let contacts = [];
 
-
-
-
-
-  // Поменять поля
-  document.querySelector('#main_add_form').addEventListener("submit", async e => {
-    e.preventDefault();
-    let fio = document.getElementById('fio').value.trim();
-
-    const regular_fio = /([А-Яа-я-.]+)\ ([А-Яа-я-.]+)\ ([А-Яа-я-.]+)/;
-    fio = fio.match(regular_fio);
-
-    const name = fio[1];
-    const surname = fio[2];
-    const lastname = fio[3];
-
-
-
-
+    for (let i = 0; i < document.querySelectorAll('.contacts_select').length; i++) {
+      const type = document.querySelectorAll('.contacts_type')[i].value.trim();
+      const value = document.querySelectorAll('.contacts_select')[i].value.trim();
+      const contactPush = Array();
+      contactPush.push(type, value);
+      contacts.push(contactPush);
+    }
+    contacts = JSON.stringify(contacts);
+    console.log(contacts);
     const response = await fetch('http://localhost:3000/api/customers', {
       method: 'POST',
       body: JSON.stringify({
         name: name,
         surname: surname,
         lastname: lastname,
-        contacts: {}
+        contacts: contacts
       }),
       headers: {
         'Content-Type': 'application/json'
       }
     });
-
+    console.log(response);
     const customer = await response.json();
-    console.log(customer)
 
 
-    e.target.reset();
     cleaningTable();
     renderCustomerTable();
     alert('Добавлен новый клиент');
@@ -55,14 +42,99 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 
+  document.querySelector("#btn_add_contact_add").addEventListener("click", () => {
+
+
+
+    const toadd = document.querySelector('#modal_btn_contact');
+    const div_contacts = document.createElement("div");
+    const select_contact = document.createElement("select");
+    const input_contact = document.createElement("input");
+
+    select_contact.setAttribute('class', 'contacts_type');
+
+    input_contact.setAttribute('class', 'contacts_select');
+
+    const optionTel = document.createElement("option");
+    optionTel.value = 'mob';
+    optionTel.innerText = 'Телефон';
+    const optionEmail = document.createElement("option");
+    optionEmail.value = 'email';
+    optionEmail.innerText = 'Email';
+    const optionVk = document.createElement("option");
+    optionVk.value = 'vk';
+    optionVk.innerText = 'VK';
+    const optionFacebook = document.createElement("option");
+    optionFacebook.value = 'facebook';
+    optionFacebook.innerText = 'Facebook';
+    const optionOther = document.createElement("option");
+    optionOther.value = 'other';
+    optionOther.innerText = 'Другое';
+
+    select_contact.append(optionTel);
+    select_contact.append(optionEmail);
+    select_contact.append(optionVk);
+    select_contact.append(optionFacebook);
+    select_contact.append(optionOther);
+
+
+    div_contacts.append(select_contact);
+    div_contacts.append(input_contact);
+    toadd.prepend(div_contacts);
+  });
+
+  let modal_add = document.getElementById("modal_add");
+  let btn_add = document.getElementById("btn_add");
+  let span_add = document.getElementsByClassName("close")[0];
+  let bottom_close = document.getElementsByClassName("close_bottom")[0];
+
+
+
+
+  btn_add.onclick = function () {
+    modal_add.style.display = "block";
+  }
+
+  // Когда пользователь нажимает на <span> (x), закройте модальное окно
+  span_add.onclick = function () {
+    modal_add.style.display = "none";
+  }
+
+  bottom_close.onclick = function () {
+    modal_add.style.display = "none";
+  }
+
+  // Когда пользователь щелкает в любом месте за пределами модального, закройте его
+  window.onclick = function (event) {
+    if (event.target == modal_add) {
+      modal_add.style.display = "none";
+    }
+  }
+
+
+
+
+
+
+
 
 
 
 
 });
 
-function removeExtendedIco() {
-  console.log(this.id);
+function removeExtendedIco(id) {
+  const allId = document.getElementsByClassName(id);
+  for (let i = 0; i < allId.length; i++) {
+    if (allId[i].classList.contains('invisible_ico')) {
+      allId[i].classList.remove('invisible_ico');
+    } else if (allId[i].classList.contains('extended_ico')) {
+      allId[i].remove();
+      i--;
+    }
+  }
+
+
 }
 
 function getCustomerItem(customer) {
@@ -85,7 +157,6 @@ function getCustomerItem(customer) {
   contacts.setAttribute('style', 'width:140px');
 
   let arrayInvisibleContacts = Array();
-  console.log(customer.contacts);
   for (let i = 0; i < keysContacts.length; i++) {
 
 
@@ -97,20 +168,19 @@ function getCustomerItem(customer) {
 
 
     if (customer.contacts[i][0] == 'mob') {
-      contact.setAttribute('id', '');
-      contact.setAttribute('class', 'mob_ico');
+      contact.classList.add('mob_ico', `${customer.id}`);
       contact.setAttribute('info', info_text);
     } else if (customer.contacts[i][0] == 'email') {
-      contact.setAttribute('class', 'email_ico');
+      contact.classList.add('email_ico', `${customer.id}`);
       contact.setAttribute('info', info_text);
     } else if (customer.contacts[i][0] == 'facebook') {
-      contact.setAttribute('class', 'facebook_ico');
+      contact.classList.add('facebook_ico', `${customer.id}`);
       contact.setAttribute('info', info_text);
     } else if (customer.contacts[i][0] == 'vk') {
-      contact.setAttribute('class', 'vk_ico');
+      contact.classList.add('vk_ico', `${customer.id}`);
       contact.setAttribute('info', info_text);
     } else if (customer.contacts[i][0] == 'other') {
-      contact.setAttribute('class', 'other_ico');
+      contact.classList.add('other_ico', `${customer.id}`);
       contact.setAttribute('info', info_text);
     }
     if (keysContacts.length > 5 && i >= 4) {
@@ -118,7 +188,7 @@ function getCustomerItem(customer) {
       let extended_ico = document.createElement("span");
 
       if (i == 4) {
-        extended_ico.classList.add('extended_ico');
+        extended_ico.classList.add('extended_ico', `${customer.id}`);
         extended_ico.innerText = `+${keysContacts.length - i}`;
         extended_ico.setAttribute('onclick', `removeExtendedIco(${customer.id})`);
 
@@ -132,7 +202,6 @@ function getCustomerItem(customer) {
 
     // contacts_div.append(contact);
     contacts.append(contact);
-    console.log(contact);
 
 
   }
@@ -154,7 +223,9 @@ function getCustomerItem(customer) {
 
   delete_btn.innerText = 'Удалить';
   delete_btn.setAttribute('class', 'delete_customer');
-  delete_btn.setAttribute('onclick', `deleteCustomer(${customer.id})`);
+  let customer_id = customer.id;
+  customer_id = String(customer.id);
+  delete_btn.setAttribute('onclick', `deleteCustomer(${customer_id})`);
   actions_td.append(delete_btn);
 
   const createAt = new Date(customer.createdAt);
@@ -239,6 +310,8 @@ async function deleteCustomer(id) {
   const response = await fetch(`http://localhost:3000/api/customers/${id}`, {
     method: 'DELETE'
   });
+
+
   cleaningTable();
   renderCustomerTable();
 }
