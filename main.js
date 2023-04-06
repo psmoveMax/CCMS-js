@@ -14,9 +14,15 @@ document.addEventListener("DOMContentLoaded", function () {
       const contactPush = Array();
       contactPush.push(type, value);
       contacts.push(contactPush);
+      console.log(JSON.stringify(contactPush));
     }
-    contacts = JSON.stringify(contacts);
+
     console.log(contacts);
+    console.log(JSON.stringify(contacts));
+
+
+
+
     const response = await fetch('http://localhost:3000/api/customers', {
       method: 'POST',
       body: JSON.stringify({
@@ -46,14 +52,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    const toadd = document.querySelector('#modal_btn_contact');
+    const toadd = document.querySelector('#options_add');
     const div_contacts = document.createElement("div");
     const select_contact = document.createElement("select");
     const input_contact = document.createElement("input");
+    const delete_contact = document.createElement("button");
 
+
+    div_contacts.classList.add('div_contact');
     select_contact.setAttribute('class', 'contacts_type');
 
-    input_contact.setAttribute('class', 'contacts_select');
+    input_contact.classList.add('contacts_select');
+    input_contact.setAttribute('placeholder', 'Введите данные контакта');
+    delete_contact.type = 'button';
+    delete_contact.classList.add('btn', 'del_cont');
+
 
     const optionTel = document.createElement("option");
     optionTel.value = 'mob';
@@ -80,7 +93,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     div_contacts.append(select_contact);
     div_contacts.append(input_contact);
-    toadd.prepend(div_contacts);
+    div_contacts.append(delete_contact);
+    toadd.append(div_contacts);
   });
 
   let modal_add = document.getElementById("modal_add");

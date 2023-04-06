@@ -43,7 +43,7 @@ function drainJson(req) {
  * Проверяет входные данные и создаёт из них корректный объект клиента
  * @param {Object} data - Объект с входными данными
  * @throws {ApiError} Некорректные данные в аргументе (statusCode 422)
- * @returns {{ name: string, surname: string, lastname: string, contacts: array}} Объект клиента
+ * @returns {{ name: string, surname: string, lastname: string, contacts: object}} Объект клиента
  */
 function makeCustomerFromData(data) {
     const errors = [];
@@ -57,7 +57,7 @@ function makeCustomerFromData(data) {
         name: asString(data.name),
         surname: asString(data.surname),
         lastname: asString(data.lastname),
-        contacts: asString(data.contacts),
+        contacts: data.contacts,
     }
 
     // проверяем, все ли данные корректные и заполняем объект ошибок, которые нужно отдать клиенту
@@ -74,7 +74,7 @@ function makeCustomerFromData(data) {
 /**
  * Возвращает список клиентов из базы данных
  * @param {{ search: string }} [params] - Поисковая строка
- * @returns {{ id: string, name: string, surname: string, lastname: string, contacts: array }[]} Массив студентов
+ * @returns {{ id: string, name: string, surname: string, lastname: string, contacts: object }[]} Массив студентов
  */
 function getCustomerList(params = {}) {
     const customers = JSON.parse(readFileSync(DB_FILE) || '[]');
@@ -96,7 +96,7 @@ function getCustomerList(params = {}) {
  * Создаёт и сохраняет клиента в базу данных
  * @throws {ApiError} Некорректные данные в аргументе, клиент не создан (statusCode 422)
  * @param {Object} data - Данные из тела запроса
- * @returns {{ id: string, name: string, surname: string, lastname: string, contacts: array, createdAt: string, updatedAt: string }} Объект клиента
+ * @returns {{ id: string, name: string, surname: string, lastname: string, contacts: object, createdAt: string, updatedAt: string }} Объект клиента
  */
 function createCustomer(data) {
     console.log(data);
@@ -112,7 +112,7 @@ function createCustomer(data) {
  * Возвращает объект клиента по его ID
  * @param {string} itemId - ID студента
  * @throws {ApiError} Клиент с таким ID не найден (statusCode 404)
- * @returns {{ id: string, name: string, surname: string, lastname: string, contacts: array createdAt: string, updatedAt: string }} Объект клиента
+ * @returns {{ id: string, name: string, surname: string, lastname: string, contacts: object createdAt: string, updatedAt: string }} Объект клиента
  */
 function getCustomer(itemId) {
     const customer = getCustomerList().find(({ id }) => id === itemId);
@@ -122,11 +122,11 @@ function getCustomer(itemId) {
 
 /**
  * Изменяет клиента с указанным ID и сохраняет изменения в базу данных
- * @param {string} itemId - ID изменяемого студента
+ * @param {string} itemId - ID изменяемого клиента
  * @param {{ name?: string, surname?: string, lastname?: string, contacts?: object }} data - Объект с изменяемыми данными
  * @throws {ApiError} клиент с таким ID не найден (statusCode 404)
  * @throws {ApiError} Некорректные данные в аргументе (statusCode 422)
- * @returns {{ id: string, name: string, surname: string, lastname: string, contacts: array, createdAt: string, updatedAt: string }} Объект клиента
+ * @returns {{ id: string, name: string, surname: string, lastname: string, contacts: object, createdAt: string, updatedAt: string }} Объект клиента
  */
 function updateCustomer(itemId, data) {
     const customers = getCustomerList();
@@ -235,13 +235,13 @@ module.exports = createServer(async (req, res) => {
     // выводим инструкцию, как только сервер запустился...
     .on('listening', () => {
         if (process.env.NODE_ENV !== 'test') {
-            console.log(`Сервер Students запущен. Вы можете использовать его по адресу http://localhost:${PORT}`);
+            console.log(`Сервер CRM запущен. Вы можете использовать его по адресу http://localhost:${PORT}`);
             console.log('Нажмите CTRL+C, чтобы остановить сервер');
             console.log('Доступные методы:');
             console.log(`GET ${URI_PREFIX} - получить список клиентов, в query параметр search можно передать поисковый запрос`);
-            console.log(`POST ${URI_PREFIX} - создать клиента, в теле запроса нужно передать объект { name: string, surname: string, lastname: string, contacts: object}`);
+            console.log(`POST ${URI_PREFIX} - создать клиента, в теле запроса нужно передать объект { name: string, surname: string, lastname?: string, contacts?: array}`);
             console.log(`GET ${URI_PREFIX}/{id} - получить клиента по его ID`);
-            console.log(`PATCH ${URI_PREFIX}/{id} - изменить клиента с ID, в теле запроса нужно передать объект { name?: string, surname?: string, lastname?: string, contacts?: object}`);
+            console.log(`PATCH ${URI_PREFIX}/{id} - изменить клиента с ID, в теле запроса нужно передать объект { name?: string, surname?: string, lastname?: string, contacts?: array}`);
             console.log(`DELETE ${URI_PREFIX}/{id} - удалить клиента по ID`);
         }
     })
