@@ -271,13 +271,32 @@ thead tr th {
     font-weight: 600;
 }
 
-#btn_save {
+#btn_save,
+#btn_resave {
     padding: 12.5px 26.5px 12.5px 26.5px;
     border: 1px solid #9873FF;
     color: white;
     cursor: pointer;
     font-weight: 600;
     background: #9873FF;
+}
+
+
+#modal_name_edit {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 25px;
+    color: #333;
+}
+
+#modal_name_id {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    color: #B0B0B0;
+    margin-left: 9px;
 }
 
 
@@ -368,6 +387,11 @@ thead {
     padding: 25px 30px 25px 30px;
 }
 
+#main_edit_form {
+
+    padding: 25px 30px 25px 30px;
+}
+
 /* Модальный (фон) */
 .modal {
     display: none;
@@ -446,7 +470,8 @@ thead {
     padding-bottom: 8px;
 }
 
-#btn_add_contact_add {
+#btn_add_contact_add,
+#btn_add_contact_edit {
     cursor: pointer;
 
 }

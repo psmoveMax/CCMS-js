@@ -48,12 +48,12 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 
-  document.querySelector("#btn_add_contact_add").addEventListener("click", () => {
+  function eventAddContact(options_name) {
+    const id_contact = `F${Math.random().toString().substr('2', '5')}`;
 
-
-
-    const toadd = document.querySelector('#options_add');
+    const toadd = document.querySelector(`#${options_name}`);
     const div_contacts = document.createElement("div");
+    div_contacts.setAttribute('id', `${id_contact}`);
     const select_contact = document.createElement("select");
     const input_contact = document.createElement("input");
     const delete_contact = document.createElement("button");
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
     input_contact.setAttribute('placeholder', 'Введите данные контакта');
     delete_contact.type = 'button';
     delete_contact.classList.add('btn', 'del_cont');
-
+    delete_contact.setAttribute('onclick', `deleteContact(${id_contact})`);
 
     const optionTel = document.createElement("option");
     optionTel.value = 'mob';
@@ -95,11 +95,23 @@ document.addEventListener("DOMContentLoaded", function () {
     div_contacts.append(input_contact);
     div_contacts.append(delete_contact);
     toadd.append(div_contacts);
+  }
+
+  document.querySelector("#btn_add_contact_add").addEventListener("click", () => {
+    eventAddContact('options_add');
+
   });
 
+  document.querySelector("#btn_add_contact_edit").addEventListener("click", () => {
+    eventAddContact('options_edit');
+    console.log('pesting');
+
+  });
   let modal_add = document.getElementById("modal_add");
+  let modal_edit = document.getElementById("modal_edit");
   let btn_add = document.getElementById("btn_add");
   let span_add = document.getElementsByClassName("close")[0];
+  let span_edit = document.getElementsByClassName("close")[1];
   let bottom_close = document.getElementsByClassName("close_bottom")[0];
 
 
@@ -113,6 +125,10 @@ document.addEventListener("DOMContentLoaded", function () {
   span_add.onclick = function () {
     modal_add.style.display = "none";
   }
+  span_edit.onclick = function () {
+    modal_edit.style.display = "none";
+    removeContact();
+  }
 
   bottom_close.onclick = function () {
     modal_add.style.display = "none";
@@ -120,8 +136,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Когда пользователь щелкает в любом месте за пределами модального, закройте его
   window.onclick = function (event) {
-    if (event.target == modal_add) {
+    if (event.target == modal_add || event.target == modal_edit) {
       modal_add.style.display = "none";
+      modal_edit.style.display = "none";
+      removeContact();
     }
   }
 
@@ -131,11 +149,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-
-
-
-
 });
+
+function removeContact() {
+  let lengthOptions = document.querySelector('#options_edit').children.length;
+  for (let i = lengthOptions; i > 0; i--) {
+    document.querySelector('#options_edit').children[i - 1].remove();
+
+  }
+}
+
+function deleteContact(id) {
+  console.log(id.id);
+  console.log(document.getElementById(`${id.id}`));
+  document.getElementById(`${id.id}`).remove();
+
+}
+
 
 function removeExtendedIco(id) {
   const allId = document.getElementsByClassName(id);
@@ -231,7 +261,7 @@ function getCustomerItem(customer) {
 
   change_btn.innerText = 'Изменить';
 
-  change_btn.setAttribute('onclick', `alert('Тут будет изменение клиента')`);
+  change_btn.setAttribute('onclick', `changeCustomer(${customer.id})`);
   change_btn.setAttribute('class', 'change_customer');
   actions_td.append(change_btn);
 
@@ -292,6 +322,159 @@ function getCustomerItem(customer) {
 }
 
 
+async function changeCustomer(id) {
+  const modal_edit = document.getElementById("modal_edit");
+  const btn_delete = document.querySelectorAll('.close_bottom')[1];
+  const customer_id = document.getElementById("modal_name_id");
+
+  const customer_name = document.getElementById("name_edit");
+  const customer_surname = document.getElementById("surname_edit");
+  const customer_lastname = document.getElementById("lastname_edit");
+
+  const btn_resave = document.getElementById("btn_resave");
+
+  modal_edit.style.display = "block";
+  btn_delete.setAttribute('onclick', `modalEditDelete(${id})`);
+  customer_id.innerText = `ID: ${id}`;
+
+
+  const customer = await renderCustomer(id);
+  console.log(customer);
+  customer_name.value = customer.name;
+  customer_surname.value = customer.surname;
+  customer_lastname.value = customer.lastname;
+  customer_contacts = customer.contacts;
+
+
+
+
+  for (let i = 0; i < customer_contacts.length; i++) {
+    addContact(customer.contacts[i]);
+  }
+
+  function addContact(customer) {
+    const id_contact = `F${Math.random().toString().substr('2', '5')}`;
+
+    const toadd = document.querySelector('#options_edit');
+    const div_contacts = document.createElement("div");
+    div_contacts.setAttribute('id', `${id_contact}`);
+    const select_contact = document.createElement("select");
+    const input_contact = document.createElement("input");
+    const delete_contact = document.createElement("button");
+
+
+    div_contacts.classList.add('div_contact');
+    select_contact.setAttribute('class', 'contacts_type');
+
+    input_contact.classList.add('contacts_select');
+    input_contact.setAttribute('placeholder', 'Введите данные контакта');
+    delete_contact.type = 'button';
+    delete_contact.classList.add('btn', 'del_cont');
+    delete_contact.setAttribute('onclick', `deleteContact(${id_contact})`);
+
+    const optionTel = document.createElement("option");
+    optionTel.value = 'mob';
+    optionTel.innerText = 'Телефон';
+    const optionEmail = document.createElement("option");
+    optionEmail.value = 'email';
+    optionEmail.innerText = 'Email';
+    const optionVk = document.createElement("option");
+    optionVk.value = 'vk';
+    optionVk.innerText = 'VK';
+    const optionFacebook = document.createElement("option");
+    optionFacebook.value = 'facebook';
+    optionFacebook.innerText = 'Facebook';
+    const optionOther = document.createElement("option");
+    optionOther.value = 'other';
+    optionOther.innerText = 'Другое';
+
+    select_contact.append(optionTel);
+    select_contact.append(optionEmail);
+    select_contact.append(optionVk);
+    select_contact.append(optionFacebook);
+    select_contact.append(optionOther);
+
+
+    div_contacts.append(select_contact);
+    div_contacts.append(input_contact);
+    div_contacts.append(delete_contact);
+    toadd.append(div_contacts);
+
+
+
+    for (let k = 0; k < select_contact.options.length; k++) {
+
+      console.log(select_contact.options[k].value);
+      console.log(select_contact.options[0].value == customer[0]);
+      input_contact.value = customer[1];
+      if (select_contact.options[k].value == customer[0].toLowerCase()) {
+        console.log('no');
+        select_contact.selectedIndex = k;
+        break;
+      }
+    }
+
+
+  }
+  console.log(customer_contacts);
+
+
+  btn_resave.onclick = async function () {
+
+    let contacts = [];
+
+    for (let i = 0; i < document.querySelectorAll('.contacts_select').length; i++) {
+      const type = document.querySelectorAll('.contacts_type')[i].value.trim();
+      const value = document.querySelectorAll('.contacts_select')[i].value.trim();
+      const contactPush = Array();
+      contactPush.push(type, value);
+      contacts.push(contactPush);
+
+    }
+
+    console.log('test');
+    const response = await fetch(`http://localhost:3000/api/customers/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        name: customer_name.value,
+        surname: customer_surname.value,
+        lastname: customer_lastname.value,
+        contacts: contacts
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    console.log(await response);
+    document.getElementById("modal_edit").style.display = "none";
+    removeContact();
+    cleaningTable();
+    renderCustomerTable();
+  }
+
+
+}
+
+async function modalEditDelete(id) {
+
+
+  if (confirm('Вы точно желаете удалить данного клиента?')) {
+    document.getElementById("modal_edit").style.display = "none";
+
+    const response = await fetch(`http://localhost:3000/api/customers/${id}`, {
+      method: 'DELETE'
+    });
+
+
+    cleaningTable();
+    renderCustomerTable();
+  }
+
+
+}
+
+
+
 renderCustomerTable();
 
 function cleaningTable() {
@@ -314,6 +497,17 @@ async function renderCustomerTable() {
   customerList.forEach(student => {
     getCustomerItem(student);
   });
+
+
+}
+
+
+async function renderCustomer(id) {
+
+  const response = await fetch(`http://localhost:3000/api/customers/${id}`);
+  const customerList = await response.json();
+
+  return customerList;
 
 
 }
