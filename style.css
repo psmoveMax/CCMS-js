@@ -219,7 +219,7 @@ thead tr th {
 
 
 
-[info]:hover::before {
+:not([info=""]):hover::before {
 
     opacity: 1;
     /* Показываем подсказку */
@@ -227,7 +227,7 @@ thead tr th {
     left: -4.1em;
 }
 
-[info]:hover::after {
+:not([info=""]):hover::after {
 
     opacity: 1;
     /* Показываем подсказку */
@@ -272,7 +272,8 @@ thead tr th {
 }
 
 #btn_save,
-#btn_resave {
+#btn_resave,
+#btn_delete_customer {
     padding: 12.5px 26.5px 12.5px 26.5px;
     border: 1px solid #9873FF;
     color: white;
@@ -281,6 +282,12 @@ thead tr th {
     background: #9873FF;
 }
 
+#modal_name_del {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 25px;
+}
 
 #modal_name_edit {
     font-style: normal;
@@ -382,15 +389,14 @@ thead {
     color: gray;
 }
 
-#main_add_form {
+#main_add_form,
+#main_edit_form,
+#main_remove_form {
 
     padding: 25px 30px 25px 30px;
 }
 
-#main_edit_form {
 
-    padding: 25px 30px 25px 30px;
-}
 
 /* Модальный (фон) */
 .modal {

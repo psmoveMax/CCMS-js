@@ -6,42 +6,41 @@ document.addEventListener("DOMContentLoaded", function () {
     let surname = document.getElementById('surname').value.trim();
     let lastname = document.getElementById('lastname').value.trim();
 
-    let contacts = [];
+    if (name != '' && surname != '') {
+      let contacts = [];
 
-    for (let i = 0; i < document.querySelectorAll('.contacts_select').length; i++) {
-      const type = document.querySelectorAll('.contacts_type')[i].value.trim();
-      const value = document.querySelectorAll('.contacts_select')[i].value.trim();
-      const contactPush = Array();
-      contactPush.push(type, value);
-      contacts.push(contactPush);
-      console.log(JSON.stringify(contactPush));
+      for (let i = 0; i < document.querySelectorAll('.contacts_select').length; i++) {
+        const type = document.querySelectorAll('.contacts_type')[i].value.trim();
+        const value = document.querySelectorAll('.contacts_select')[i].value.trim();
+        const contactPush = Array();
+
+        contactPush.push(type, value);
+        contacts.push(contactPush);
+      }
+
+
+
+
+
+      const response = await fetch('http://localhost:3000/api/customers', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: name,
+          surname: surname,
+          lastname: lastname,
+          contacts: contacts
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      const customer = await response.json();
+
+      document.querySelector('#modal_add').style.display = 'none';
+      cleaningTable();
+      renderCustomerTable();
     }
 
-    console.log(contacts);
-    console.log(JSON.stringify(contacts));
-
-
-
-
-    const response = await fetch('http://localhost:3000/api/customers', {
-      method: 'POST',
-      body: JSON.stringify({
-        name: name,
-        surname: surname,
-        lastname: lastname,
-        contacts: contacts
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    console.log(response);
-    const customer = await response.json();
-
-
-    cleaningTable();
-    renderCustomerTable();
-    alert('Добавлен новый клиент');
 
 
 
@@ -63,6 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
     select_contact.setAttribute('class', 'contacts_type');
 
     input_contact.classList.add('contacts_select');
+    input_contact.required = true;
     input_contact.setAttribute('placeholder', 'Введите данные контакта');
     delete_contact.type = 'button';
     delete_contact.classList.add('btn', 'del_cont');
@@ -98,20 +98,30 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   document.querySelector("#btn_add_contact_add").addEventListener("click", () => {
-    eventAddContact('options_add');
-
+    if (document.querySelector('#options_edit').children.length < 10) {
+      eventAddContact('options_add');
+    } else {
+      alert('Максимум 10 контактов!');
+    }
   });
 
   document.querySelector("#btn_add_contact_edit").addEventListener("click", () => {
-    eventAddContact('options_edit');
-    console.log('pesting');
+    if (document.querySelector('#options_edit').children.length < 10) {
+      eventAddContact('options_edit');
+    } else {
+      alert('Максимум 10 контактов!');
+    }
+
 
   });
   let modal_add = document.getElementById("modal_add");
   let modal_edit = document.getElementById("modal_edit");
+  let modal_delete = document.getElementById("modal_delete");
   let btn_add = document.getElementById("btn_add");
   let span_add = document.getElementsByClassName("close")[0];
   let span_edit = document.getElementsByClassName("close")[1];
+  let span_delete = document.getElementsByClassName("close")[2];
+  let bottom_delete = document.getElementsByClassName("close_bottom")[2];
   let bottom_close = document.getElementsByClassName("close_bottom")[0];
 
 
@@ -121,14 +131,29 @@ document.addEventListener("DOMContentLoaded", function () {
     modal_add.style.display = "block";
   }
 
+
+
+
   // Когда пользователь нажимает на <span> (x), закройте модальное окно
   span_add.onclick = function () {
     modal_add.style.display = "none";
   }
+
+  span_delete.onclick = function () {
+    modal_delete.style.display = "none";
+  }
+
+  bottom_delete.onclick = function () {
+    modal_delete.style.display = "none";
+  }
+
+
   span_edit.onclick = function () {
     modal_edit.style.display = "none";
     removeContact();
   }
+
+
 
   bottom_close.onclick = function () {
     modal_add.style.display = "none";
@@ -136,9 +161,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Когда пользователь щелкает в любом месте за пределами модального, закройте его
   window.onclick = function (event) {
-    if (event.target == modal_add || event.target == modal_edit) {
+    if (event.target == modal_add || event.target == modal_edit || event.target == modal_delete) {
       modal_add.style.display = "none";
       modal_edit.style.display = "none";
+      modal_delete.style.display = "none";
       removeContact();
     }
   }
@@ -160,8 +186,7 @@ function removeContact() {
 }
 
 function deleteContact(id) {
-  console.log(id.id);
-  console.log(document.getElementById(`${id.id}`));
+
   document.getElementById(`${id.id}`).remove();
 
 }
@@ -200,7 +225,6 @@ function getCustomerItem(customer) {
 
   contacts.setAttribute('style', 'width:140px');
 
-  let arrayInvisibleContacts = Array();
   for (let i = 0; i < keysContacts.length; i++) {
 
 
@@ -242,9 +266,7 @@ function getCustomerItem(customer) {
 
 
 
-    // info.append(info_p);
 
-    // contacts_div.append(contact);
     contacts.append(contact);
 
 
@@ -339,7 +361,6 @@ async function changeCustomer(id) {
 
 
   const customer = await renderCustomer(id);
-  console.log(customer);
   customer_name.value = customer.name;
   customer_surname.value = customer.surname;
   customer_lastname.value = customer.lastname;
@@ -404,11 +425,9 @@ async function changeCustomer(id) {
 
     for (let k = 0; k < select_contact.options.length; k++) {
 
-      console.log(select_contact.options[k].value);
-      console.log(select_contact.options[0].value == customer[0]);
+
       input_contact.value = customer[1];
       if (select_contact.options[k].value == customer[0].toLowerCase()) {
-        console.log('no');
         select_contact.selectedIndex = k;
         break;
       }
@@ -416,7 +435,6 @@ async function changeCustomer(id) {
 
 
   }
-  console.log(customer_contacts);
 
 
   btn_resave.onclick = async function () {
@@ -432,7 +450,6 @@ async function changeCustomer(id) {
 
     }
 
-    console.log('test');
     const response = await fetch(`http://localhost:3000/api/customers/${id}`, {
       method: 'PATCH',
       body: JSON.stringify({
@@ -445,7 +462,6 @@ async function changeCustomer(id) {
         'Content-Type': 'application/json'
       }
     });
-    console.log(await response);
     document.getElementById("modal_edit").style.display = "none";
     removeContact();
     cleaningTable();
@@ -458,17 +474,17 @@ async function changeCustomer(id) {
 async function modalEditDelete(id) {
 
 
-  if (confirm('Вы точно желаете удалить данного клиента?')) {
-    document.getElementById("modal_edit").style.display = "none";
 
-    const response = await fetch(`http://localhost:3000/api/customers/${id}`, {
-      method: 'DELETE'
-    });
+  document.getElementById("modal_edit").style.display = "none";
+
+  const response = await fetch(`http://localhost:3000/api/customers/${id}`, {
+    method: 'DELETE'
+  });
 
 
-    cleaningTable();
-    renderCustomerTable();
-  }
+  cleaningTable();
+  renderCustomerTable();
+
 
 
 }
@@ -514,14 +530,25 @@ async function renderCustomer(id) {
 
 
 async function deleteCustomer(id) {
+  const modal_delete = document.getElementById("modal_delete");
+  const delete_button = document.querySelector('#btn_delete_customer');
+  modal_delete.style.display = "block";
 
-  const response = await fetch(`http://localhost:3000/api/customers/${id}`, {
-    method: 'DELETE'
-  });
+  delete_button.onclick = async function () {
+    modal_delete.style.display = "none";
+
+    const response = await fetch(`http://localhost:3000/api/customers/${id}`, {
+      method: 'DELETE'
+    });
 
 
-  cleaningTable();
-  renderCustomerTable();
+    cleaningTable();
+    renderCustomerTable();
+  }
+
+
+
+
 }
 
 // Этап 5. Создайте функцию сортировки массива студентов и добавьте события кликов на соответствующие колонки.
