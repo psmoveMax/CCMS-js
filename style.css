@@ -196,6 +196,13 @@ thead tr th {
 }
 
 
+.hint {
+    color: #FFFFFF;
+}
+
+input:required+.hint {
+    color: #9873FF;
+}
 
 [info] {
     position: relative;
@@ -273,7 +280,8 @@ thead tr th {
 
 #btn_save,
 #btn_resave,
-#btn_delete_customer {
+#btn_delete_customer,
+#btn_close_info {
     padding: 12.5px 26.5px 12.5px 26.5px;
     border: 1px solid #9873FF;
     color: white;
@@ -391,7 +399,8 @@ thead {
 
 #main_add_form,
 #main_edit_form,
-#main_remove_form {
+#main_remove_form,
+#main_info_form {
 
     padding: 25px 30px 25px 30px;
 }
@@ -454,7 +463,8 @@ thead {
 }
 
 
-#modal_name {
+#modal_name,
+#info_header {
     font-style: normal;
     font-weight: 700;
     font-size: 18px;

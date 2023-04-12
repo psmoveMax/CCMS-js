@@ -6,36 +6,39 @@ document.addEventListener("DOMContentLoaded", function () {
     let surname = document.getElementById('surname').value.trim();
     let lastname = document.getElementById('lastname').value.trim();
 
-    if (name != '' && surname != '') {
-      let contacts = [];
 
-      for (let i = 0; i < document.querySelectorAll('.contacts_select').length; i++) {
-        const type = document.querySelectorAll('.contacts_type')[i].value.trim();
-        const value = document.querySelectorAll('.contacts_select')[i].value.trim();
-        const contactPush = Array();
+    let contacts = [];
 
-        contactPush.push(type, value);
-        contacts.push(contactPush);
+    for (let i = 0; i < document.querySelectorAll('.contacts_select').length; i++) {
+      const type = document.querySelectorAll('.contacts_type')[i].value.trim();
+      const value = document.querySelectorAll('.contacts_select')[i].value.trim();
+      const contactPush = Array();
+
+      contactPush.push(type, value);
+      contacts.push(contactPush);
+    }
+
+
+
+
+
+    const response = await fetch('http://localhost:3000/api/customers', {
+      method: 'POST',
+      body: JSON.stringify({
+        name: name,
+        surname: surname,
+        lastname: lastname,
+        contacts: contacts
+      }),
+      headers: {
+        'Content-Type': 'application/json'
       }
-
-
-
-
-
-      const response = await fetch('http://localhost:3000/api/customers', {
-        method: 'POST',
-        body: JSON.stringify({
-          name: name,
-          surname: surname,
-          lastname: lastname,
-          contacts: contacts
-        }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      const customer = await response.json();
-
+    });
+    const customer = await response.json();
+    console.log(customer);
+    if (customer.hasOwnProperty("errors")) {
+      infoModal('Ошибка!', customer);
+    } else {
       document.querySelector('#modal_add').style.display = 'none';
       cleaningTable();
       renderCustomerTable();
@@ -44,7 +47,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+
+
   });
+
 
 
   function eventAddContact(options_name) {
@@ -98,31 +104,40 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   document.querySelector("#btn_add_contact_add").addEventListener("click", () => {
-    if (document.querySelector('#options_edit').children.length < 10) {
+    if (document.querySelector('#options_add').children.length < 10) {
       eventAddContact('options_add');
+      if (document.querySelector('#options_add').children.length == 10) {
+        document.querySelector("#btn_add_contact_add").style.display = 'none';
+      }
     } else {
-      alert('Максимум 10 контактов!');
+
     }
   });
 
   document.querySelector("#btn_add_contact_edit").addEventListener("click", () => {
     if (document.querySelector('#options_edit').children.length < 10) {
       eventAddContact('options_edit');
+      if (document.querySelector('#options_edit').children.length == 10) {
+        document.querySelector("#btn_add_contact_edit").style.display = 'none';
+      }
     } else {
-      alert('Максимум 10 контактов!');
+
     }
 
 
   });
-  let modal_add = document.getElementById("modal_add");
-  let modal_edit = document.getElementById("modal_edit");
-  let modal_delete = document.getElementById("modal_delete");
-  let btn_add = document.getElementById("btn_add");
-  let span_add = document.getElementsByClassName("close")[0];
-  let span_edit = document.getElementsByClassName("close")[1];
-  let span_delete = document.getElementsByClassName("close")[2];
-  let bottom_delete = document.getElementsByClassName("close_bottom")[2];
-  let bottom_close = document.getElementsByClassName("close_bottom")[0];
+  const modal_add = document.getElementById("modal_add");
+  const modal_edit = document.getElementById("modal_edit");
+  const modal_delete = document.getElementById("modal_delete");
+  const modal_info = document.getElementById("modal_info");
+  const btn_add = document.getElementById("btn_add");
+  const span_add = document.getElementsByClassName("close")[0];
+  const span_edit = document.getElementsByClassName("close")[1];
+  const span_delete = document.getElementsByClassName("close")[2];
+  const span_info = document.getElementsByClassName("close")[3];
+  const bottom_delete = document.getElementsByClassName("close_bottom")[2];
+  const bottom_close = document.getElementsByClassName("close_bottom")[0];
+  const bottom_info = document.getElementById("btn_close_info");
 
 
 
@@ -143,10 +158,17 @@ document.addEventListener("DOMContentLoaded", function () {
     modal_delete.style.display = "none";
   }
 
+  span_info.onclick = function () {
+    modal_info.style.display = "none";
+  }
+
   bottom_delete.onclick = function () {
     modal_delete.style.display = "none";
   }
 
+  bottom_info.onclick = function () {
+    modal_info.style.display = "none";
+  }
 
   span_edit.onclick = function () {
     modal_edit.style.display = "none";
@@ -159,6 +181,7 @@ document.addEventListener("DOMContentLoaded", function () {
     modal_add.style.display = "none";
   }
 
+  /*
   // Когда пользователь щелкает в любом месте за пределами модального, закройте его
   window.onclick = function (event) {
     if (event.target == modal_add || event.target == modal_edit || event.target == modal_delete) {
@@ -168,6 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
       removeContact();
     }
   }
+  */
 
 
 
@@ -176,6 +200,47 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 });
+function infoModal(header, text, mode = 'norm') {
+
+
+
+  const modal_info = document.getElementById("modal_info");
+  const form = document.querySelector('.form-info');
+  modal_info.style.display = 'block';
+  document.querySelector('#info_header').innerText = header;
+  console.log(form.children.length);
+  let length = form.children.length;
+
+  //Очистка формы
+  if (length > 0) {
+    for (let i = 0; i < length; i++) {
+      console.log('ERASING');
+      console.log(form.children);
+      console.log(form.children[0]);
+      form.children[0].remove();
+    }
+  }
+
+  if (mode == 'critical') {
+    document.querySelector('#btn_close_info').setAttribute('onclick', 'location.reload()');
+    document.querySelector('#btn_close_info').innerText = 'Повторить попытку соединения';
+  }
+
+  if (text.hasOwnProperty("errors")) {
+    for (let i = 0; i < text['errors'].length; i++) {
+      const select_contact = document.createElement("p");
+      select_contact.innerText = `${i + 1}) ${text['errors'][i]['message']}`;
+      form.append(select_contact);
+    }
+  } else {
+    const select_contact = document.createElement("p");
+    select_contact.innerText = text;
+    form.append(select_contact);
+  }
+
+
+
+}
 
 function removeContact() {
   let lengthOptions = document.querySelector('#options_edit').children.length;
@@ -187,7 +252,16 @@ function removeContact() {
 
 function deleteContact(id) {
 
+
   document.getElementById(`${id.id}`).remove();
+
+  if (document.querySelector('#options_add').children.length < 10) {
+    document.querySelector('#btn_add_contact_add').style.display = 'block';
+  }
+
+  if (document.querySelector('#options_edit').children.length < 10) {
+    document.querySelector('#btn_add_contact_edit').style.display = 'block';
+  }
 
 }
 
@@ -507,9 +581,23 @@ function cleaningTable() {
 
 async function renderCustomerTable() {
 
+  await fetch('http://localhost:3000/api/customers')
+    .then((response) => {
+      // Проверяем успешность запроса и выкидываем ошибку
+      if (!response.ok) {
+        throw new Error('Error occurred!')
+      }
+
+      return response.json()
+    })
+    // Теперь попадём сюда, т.к выбросили ошибку
+    .catch((err) => {
+      const error = 'Невозможно подключиться к серверу, повторите попытку'
+      infoModal('Ошибка!', error, 'critical');
+    }) // Error: Error occurred!
+
   const response = await fetch('http://localhost:3000/api/customers');
   const customerList = await response.json();
-
   customerList.forEach(student => {
     getCustomerItem(student);
   });

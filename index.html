@@ -50,10 +50,12 @@
           <div class="form-group">
             <div style="display: flex; flex-direction: column;">
               <div class="input-name" style="margin-bottom: 32px;">
-                <input type="text" placeholder="Фамилия*" id="surname" required>
+                <input type="text" placeholder="Фамилия" id="surname" required>
+                <span class="hint">Обязательно к заполнению</span>
               </div>
               <div class="input-name" style="margin-bottom: 32px;">
-                <input type="text" placeholder="Имя*" id="name" required>
+                <input type="text" placeholder="Имя" id="name" required>
+                <span class="hint">Обязательно к заполнению</span>
               </div>
               <div class="input-name" style="margin-bottom: 25px;">
                 <input type="text" placeholder="Отчество" id="lastname">
@@ -159,6 +161,30 @@
 
             <a id="btn_delete_customer" type="submit">Удалить</a>
             <a class="close_bottom">Отмена</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="modal_info" class="modal">
+      <div class="modal-content">
+
+        <form id="main_info_form" name="form">
+
+          <div class="modal_header">
+            <span class="close" style="text-align: right;">&times;</span>
+            <span id="info_header"></span>
+          </div>
+
+          <div class="form-info">
+
+
+
+
+          </div>
+          <div class="modal_bottom">
+
+            <a id="btn_close_info" type="submit">Закрыть</a>
           </div>
         </form>
       </div>
