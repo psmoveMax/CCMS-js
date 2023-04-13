@@ -1,5 +1,15 @@
 document.addEventListener("DOMContentLoaded", function () {
 
+
+
+
+
+  const form = document.querySelector('#main_filter');
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+  })
+
+
   document.querySelector('#btn_save').addEventListener("click", async e => {
     e.preventDefault();
     let name = document.getElementById('name').value.trim();
@@ -871,7 +881,15 @@ function sort_func(sort_name) {
 
 
 
-function search_func() {
+function debounce(func, timeout = 300) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => { func.apply(this, args); }, timeout);
+  };
+}
+async function saveInput() {
+  cleaningTable();
   let fio_input, table, tr, i;
   fio_input = document.getElementById("search_fio");
   filter_fio = fio_input.value.toUpperCase();
@@ -879,17 +897,22 @@ function search_func() {
 
   table = document.getElementById("main_table");
   tr = table.getElementsByTagName("tr");
-  for (i = 1; i < tr.length; i++) {
-    th_fio = tr[i].getElementsByTagName("th")[0];
-    if (th_fio) {
-      if (th_fio.innerHTML.toUpperCase().indexOf(filter_fio) > -1) {
 
-        tr[i].style.display = "";
-      }
-      else {
-        tr[i].style.display = "none";
-      }
+  const response = await fetch('http://localhost:3000/api/customers');
+
+
+  const customerList = await response.json();
+  console.log(customerList);
+
+
+  customerList.forEach(student => {
+    const fio = `${student.name} ${student.surname} ${student.lastname} `;
+    if (fio.toUpperCase().indexOf(filter_fio) > -1) {
+      getCustomerItem(student);
+
     }
-  }
-
+  });
 }
+
+const search_func = debounce(() => saveInput());
+
