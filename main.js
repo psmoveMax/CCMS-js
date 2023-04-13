@@ -191,7 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
     modal_add.style.display = "none";
   }
 
-  /*
+
   // Когда пользователь щелкает в любом месте за пределами модального, закройте его
   window.onclick = function (event) {
     if (event.target == modal_add || event.target == modal_edit || event.target == modal_delete) {
@@ -201,7 +201,7 @@ document.addEventListener("DOMContentLoaded", function () {
       removeContact();
     }
   }
-  */
+
 
 
 
@@ -239,7 +239,7 @@ function infoModal(header, text, mode = 'norm') {
   if (text.hasOwnProperty("errors")) {
     for (let i = 0; i < text['errors'].length; i++) {
       const select_contact = document.createElement("p");
-      select_contact.innerText = `${i + 1}) ${text['errors'][i]['message']}`;
+      select_contact.innerHTML = `<li>${text['errors'][i]['message']}</li>`;
       form.append(select_contact);
     }
   } else {
@@ -546,10 +546,18 @@ async function changeCustomer(id) {
         'Content-Type': 'application/json'
       }
     });
-    document.getElementById("modal_edit").style.display = "none";
-    removeContact();
-    cleaningTable();
-    renderCustomerTable();
+    const customer = await response.json();
+    console.log(customer);
+    if (customer.hasOwnProperty("errors")) {
+      infoModal('Ошибка!', customer);
+    } else {
+      document.querySelector('#modal_edit').style.display = 'none';
+      removeContact();
+      cleaningTable();
+      renderCustomerTable();
+    }
+
+
   }
 
 
