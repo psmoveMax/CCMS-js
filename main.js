@@ -598,11 +598,14 @@ function cleaningTable() {
 
 
 async function renderCustomerTable() {
-
+  console.log(document.querySelector("main_body"));
+  // document.querySelector(".spinner").style.display = 'inline-block';
   await fetch('http://localhost:3000/api/customers')
     .then((response) => {
+
       // Проверяем успешность запроса и выкидываем ошибку
       if (!response.ok) {
+
         throw new Error('Error occurred!')
       }
 
@@ -610,9 +613,11 @@ async function renderCustomerTable() {
     })
     // Теперь попадём сюда, т.к выбросили ошибку
     .catch((err) => {
+      document.querySelector(".spinner").style.display = 'none';
       const error = 'Невозможно подключиться к серверу, повторите попытку'
       infoModal('Ошибка!', error, 'critical');
     }) // Error: Error occurred!
+  console.log(document.querySelector(".spinner"));
 
   const response = await fetch('http://localhost:3000/api/customers');
   const customerList = await response.json();
