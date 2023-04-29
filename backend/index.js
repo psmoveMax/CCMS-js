@@ -102,7 +102,7 @@ function createCustomer(data) {
     console.log(data);
     const newItem = makeCustomerFromData(data);
     console.log(newItem);
-    newItem.id = `1${Date.now().toString().substr('7', '5')}`;
+    newItem.id = `${Date.now().toString().substr('4', '6')}`;
     newItem.createdAt = newItem.updatedAt = new Date().toISOString();
     writeFileSync(DB_FILE, JSON.stringify([...getCustomerList(), newItem]), { encoding: 'utf8' });
     return newItem;

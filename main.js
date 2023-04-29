@@ -7,7 +7,22 @@ document.addEventListener("DOMContentLoaded", function () {
   const form = document.querySelector('#main_filter');
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-  })
+  });
+
+
+  document.querySelector('#id_sort').addEventListener("click", async e => {
+    e.preventDefault();
+
+    if (document.querySelector('#id_sort').attributes.sort.value == 'up') {
+      document.querySelector('#id_sort').attributes.sort.value = 'down'
+    } else {
+      document.querySelector('#id_sort').attributes.sort.value = 'up'
+    }
+    cleaningTable();
+    renderCustomerTable();
+    console.log('te');
+
+  });
 
 
   document.querySelector('#btn_save').addEventListener("click", async e => {
@@ -618,9 +633,19 @@ async function renderCustomerTable() {
       infoModal('Ошибка!', error, 'critical');
     }) // Error: Error occurred!
   console.log(document.querySelector(".spinner"));
-
+  document.querySelector(".spinner").style.display = 'none';
   const response = await fetch('http://localhost:3000/api/customers');
-  const customerList = await response.json();
+  let customerList = await response.json();
+
+  if (document.querySelector('#id_sort').attributes.sort.value == 'up') {
+    customerList.sort((arr1, arr2) => arr1.id - arr2.id);
+  } else if (document.querySelector('#id_sort').attributes.sort.value == 'down') {
+    customerList.sort((arr1, arr2) => arr1.id + arr2.id);
+  }
+
+
+
+
   customerList.forEach(student => {
     getCustomerItem(student);
   });
