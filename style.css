@@ -574,8 +574,15 @@ input:focus:-ms-input-placeholder {
 }
 
 
-
 .spinner {
+    height: 300px;
+    background-color: white;
+    display: grid;
+    align-items: center;
+}
+
+#spinner {
+
     animation: rotate 2s linear infinite;
 
     margin: -25px 0 0 -25px;
@@ -584,6 +591,12 @@ input:focus:-ms-input-placeholder {
     position: relative;
     display: inline-block;
     left: 50%;
+    top: 50%;
+}
+
+#try_connect {
+    text-align: center;
+    color: #9873FF;
 }
 
 .path {

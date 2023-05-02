@@ -217,11 +217,16 @@
     <table class="table  table-bordered" id="main_table">
       <thead>
         <tr id="header_table">
-          <th scope="col" class="table_head" id="sort_fio">ID <svg xmlns="http://www.w3.org/2000/svg" width="8"
-              height="8" viewBox="0 0 8 8" fill="none" id="id_sort" sort="up">
-              <path
-                d="M3.49691e-07 4L0.705 4.705L3.5 1.915L3.5 8L4.5 8L4.5 1.915L7.29 4.71L8 4L4 -3.49691e-07L3.49691e-07 4Z"
-                fill="#9873FF" />
+          <th scope="col" class="table_head" id="sort_fio">ID <svg xmlns="http://www.w3.org/2000/svg" width="12"
+              height="12" viewBox="0 0 12 12" fill="none" id="id_sort" sort="up">
+              <g clip-path="url(#clip0_221_915)">
+                <path d="M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z" fill="#9873FF" />
+              </g>
+              <defs>
+                <clipPath id="clip0_221_915">
+                  <rect width="12" height="12" fill="white" transform="translate(12 12) rotate(-180)" />
+                </clipPath>
+              </defs>
             </svg></th>
           <th scope="col" class="table_head" onclick="sort_func('fio')">Фамилия Имя Отчество</th>
           <th scope="col" class="table_head">Дата и время создания </th>
@@ -236,9 +241,12 @@
       </tbody>
 
     </table>
-    <svg class="spinner" viewBox="0 0 50 50">
-      <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
-    </svg>
+    <div class="spinner">
+      <svg id="spinner" viewBox="0 0 50 50">
+        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+      </svg>
+      <p id="try_connect"></p>
+    </div>
   </div>
 
   <div id="main_add_div">

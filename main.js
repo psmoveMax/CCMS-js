@@ -614,41 +614,64 @@ function cleaningTable() {
 
 async function renderCustomerTable() {
   console.log(document.querySelector("main_body"));
-  // document.querySelector(".spinner").style.display = 'inline-block';
-  await fetch('http://localhost:3000/api/customers')
-    .then((response) => {
 
-      // Проверяем успешность запроса и выкидываем ошибку
-      if (!response.ok) {
+  function response(url = 'http://localhost:3000/api/customers') {
+    let currentRetry = 0;
 
-        throw new Error('Error occurred!')
+    const fetchDataWithRetry = () => {
+      return fetch(url)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          return data;
+        })
+        .catch((error) => {
+          currentRetry++;
+          document.querySelector('#try_connect').innerText = `Попытка подключения №${currentRetry}`;
+          return new Promise((resolve) => {
+            setTimeout(() => {
+              resolve(fetchDataWithRetry());
+            }, 1000);
+          });
+
+
+        });
+    };
+
+    return fetchDataWithRetry();
+  }
+
+
+
+  const err = await response();
+  console.log(err);
+  if (err != undefined) {
+    const response = await fetch('http://localhost:3000/api/customers');
+    document.querySelector(".spinner").style.display = 'none';
+    let customerList = await response.json();
+    // console.log(response);
+    if (document.querySelector('#id_sort').attributes.sort.value == 'up') {
+      customerList.sort((arr1, arr2) => arr1.id - arr2.id);
+    } else if (document.querySelector('#id_sort').attributes.sort.value == 'down') {
+      function sortDown(a, b) {
+        return a.id > b.id ? -1 : b.id > a.id ? 1 : 0;
       }
-
-      return response.json()
-    })
-    // Теперь попадём сюда, т.к выбросили ошибку
-    .catch((err) => {
-      document.querySelector(".spinner").style.display = 'none';
-      const error = 'Невозможно подключиться к серверу, повторите попытку'
-      infoModal('Ошибка!', error, 'critical');
-    }) // Error: Error occurred!
-  console.log(document.querySelector(".spinner"));
-  document.querySelector(".spinner").style.display = 'none';
-  const response = await fetch('http://localhost:3000/api/customers');
-  let customerList = await response.json();
-
-  if (document.querySelector('#id_sort').attributes.sort.value == 'up') {
-    customerList.sort((arr1, arr2) => arr1.id - arr2.id);
-  } else if (document.querySelector('#id_sort').attributes.sort.value == 'down') {
-    customerList.sort((arr1, arr2) => arr1.id + arr2.id);
+      customerList.sort(sortDown);
+    }
+    customerList.forEach(student => {
+      getCustomerItem(student);
+    });
   }
 
 
 
 
-  customerList.forEach(student => {
-    getCustomerItem(student);
-  });
+
+
 
 
 }
