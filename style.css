@@ -338,7 +338,7 @@ thead {
 }
 
 .table thead th {
-    vertical-align: baseline;
+    vertical-align: bottom;
     border: none;
 }
 
@@ -592,6 +592,28 @@ input:focus:-ms-input-placeholder {
     display: inline-block;
     left: 50%;
     top: 50%;
+}
+
+
+#sort_fio:hover g {
+    opacity: 1;
+    transition: 0.1s;
+}
+
+#sort_id:hover g {
+    opacity: 1;
+    transition: 0.1s;
+}
+
+
+#sort_date_now:hover g {
+    opacity: 1;
+    transition: 0.1s;
+}
+
+#sort_date_last:hover g {
+    opacity: 1;
+    transition: 0.1s;
 }
 
 #try_connect {

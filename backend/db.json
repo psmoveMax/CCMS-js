@@ -44,72 +44,48 @@
         "createdAt": "2023-04-11T04:01:48.540Z"
     },
     {
-        "name": "dd",
-        "surname": "dd",
-        "lastname": "",
-        "contacts": [
-            [
-                "mob",
-                "90178422"
-            ]
-        ],
-        "id": "116743",
-        "updatedAt": "2023-04-11T06:45:39.178Z",
-        "createdAt": "2023-04-11T04:42:47.436Z"
-    },
-    {
-        "name": "22",
-        "surname": "d2",
-        "lastname": "",
-        "contacts": [
-            [
-                "mob",
-                ""
-            ]
-        ],
-        "id": "154069",
-        "updatedAt": "2023-04-12T11:15:50.838Z",
-        "createdAt": "2023-04-11T07:02:20.696Z"
-    },
-    {
-        "name": "pola",
-        "surname": "ff",
+        "name": "Запашный",
+        "surname": "Валерий",
         "lastname": "",
         "contacts": [],
-        "id": "164647",
-        "updatedAt": "2023-04-13T10:12:18.705Z",
-        "createdAt": "2023-04-13T07:40:46.475Z"
+        "id": "103295",
+        "updatedAt": "2023-05-03T08:41:35.456Z",
+        "createdAt": "2023-05-03T08:41:35.456Z"
     },
     {
-        "name": "434",
-        "surname": "343",
-        "lastname": "fdf",
-        "contacts": [],
-        "id": "193297",
-        "updatedAt": "2023-04-25T11:25:33.003Z",
-        "createdAt": "2023-04-25T11:25:33.003Z"
-    },
-    {
-        "name": "434",
-        "surname": "343",
-        "lastname": "fdff",
-        "contacts": [],
-        "id": "194179",
-        "updatedAt": "2023-04-25T11:25:41.791Z",
-        "createdAt": "2023-04-25T11:25:41.791Z"
-    },
-    {
-        "name": "bear",
-        "surname": "polar",
+        "name": "Шутин",
+        "surname": "Ярослав",
         "lastname": "",
-        "contacts": [
-            [
-                "mob",
-                "9967332233"
-            ]
-        ],
-        "id": "999860",
-        "updatedAt": "2023-05-02T03:57:40.088Z",
-        "createdAt": "2023-05-02T03:57:40.088Z"
+        "contacts": [],
+        "id": "103308",
+        "updatedAt": "2023-05-03T08:41:48.165Z",
+        "createdAt": "2023-05-03T08:41:48.165Z"
+    },
+    {
+        "name": "Шутин",
+        "surname": "Максим",
+        "lastname": "Олегович",
+        "contacts": [],
+        "id": "103332",
+        "updatedAt": "2023-05-03T08:42:12.549Z",
+        "createdAt": "2023-05-03T08:42:12.549Z"
+    },
+    {
+        "name": "Дмитрий",
+        "surname": "Аравьев",
+        "lastname": "Викторович",
+        "contacts": [],
+        "id": "103354",
+        "updatedAt": "2023-05-03T08:42:34.790Z",
+        "createdAt": "2023-05-03T08:42:34.790Z"
+    },
+    {
+        "name": "Петр",
+        "surname": "Щеглов",
+        "lastname": "",
+        "contacts": [],
+        "id": "108856",
+        "updatedAt": "2023-05-03T10:14:16.133Z",
+        "createdAt": "2023-05-03T10:14:16.133Z"
     }
 ]

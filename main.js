@@ -19,7 +19,51 @@ document.addEventListener("DOMContentLoaded", function () {
       document.querySelector('#id_sort').attributes.sort.value = 'up'
     }
     cleaningTable();
-    renderCustomerTable();
+    renderCustomerTable('id_sort');
+    console.log('te');
+
+  });
+
+
+  document.querySelector('#fio_sort').addEventListener("click", async e => {
+    e.preventDefault();
+
+    if (document.querySelector('#fio_sort').attributes.sort.value == 'up') {
+      document.querySelector('#fio_sort').attributes.sort.value = 'down'
+    } else {
+      document.querySelector('#fio_sort').attributes.sort.value = 'up'
+    }
+    cleaningTable();
+    renderCustomerTable('fio_sort');
+    console.log('te');
+
+  });
+
+  document.querySelector('#date_now_sort').addEventListener("click", async e => {
+    e.preventDefault();
+
+    if (document.querySelector('#date_now_sort').attributes.sort.value == 'up') {
+      document.querySelector('#date_now_sort').attributes.sort.value = 'down'
+    } else {
+      document.querySelector('#date_now_sort').attributes.sort.value = 'up'
+    }
+    cleaningTable();
+    renderCustomerTable('date_now_sort');
+    console.log('te');
+
+  });
+
+
+  document.querySelector('#date_last_sort').addEventListener("click", async e => {
+    e.preventDefault();
+
+    if (document.querySelector('#date_last_sort').attributes.sort.value == 'up') {
+      document.querySelector('#date_last_sort').attributes.sort.value = 'down'
+    } else {
+      document.querySelector('#date_last_sort').attributes.sort.value = 'up'
+    }
+    cleaningTable();
+    renderCustomerTable('date_last_sort');
     console.log('te');
 
   });
@@ -612,7 +656,7 @@ function cleaningTable() {
 }
 
 
-async function renderCustomerTable() {
+async function renderCustomerTable(sort = 'standard') {
   console.log(document.querySelector("main_body"));
 
   function response(url = 'http://localhost:3000/api/customers') {
@@ -654,14 +698,105 @@ async function renderCustomerTable() {
     document.querySelector(".spinner").style.display = 'none';
     let customerList = await response.json();
     // console.log(response);
-    if (document.querySelector('#id_sort').attributes.sort.value == 'up') {
-      customerList.sort((arr1, arr2) => arr1.id - arr2.id);
-    } else if (document.querySelector('#id_sort').attributes.sort.value == 'down') {
-      function sortDown(a, b) {
-        return a.id > b.id ? -1 : b.id > a.id ? 1 : 0;
+
+
+
+
+
+
+    if (sort == 'id_sort' || sort == 'standard') {
+      document.querySelector('#id_sort').children[0].attributes['opacity'].value = 1;
+      document.querySelector('#fio_sort').children[0].attributes['opacity'].value = 0.5;
+      document.querySelector('#date_now_sort').children[0].attributes['opacity'].value = 0.5;
+      document.querySelector('#date_last_sort').children[0].attributes['opacity'].value = 0.5;
+
+
+
+      if (document.querySelector('#id_sort').attributes.sort.value == 'up') {
+        document.querySelector('#id_sort').children[0].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
+        customerList.sort((arr1, arr2) => arr1.id - arr2.id);
+      } else if (document.querySelector('#id_sort').attributes.sort.value == 'down') {
+        document.querySelector('#id_sort').children[0].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
+        function sortDown(a, b) {
+          return a.id > b.id ? -1 : b.id > a.id ? 1 : 0;
+        }
+        customerList.sort(sortDown);
       }
-      customerList.sort(sortDown);
+
+    } else if (sort == 'fio_sort') {
+
+      document.querySelector('#id_sort').children[0].attributes['opacity'].value = 0.5;
+      document.querySelector('#fio_sort').children[0].attributes['opacity'].value = 1;
+      document.querySelector('#date_now_sort').children[0].attributes['opacity'].value = 0.5;
+      document.querySelector('#date_last_sort').children[0].attributes['opacity'].value = 0.5;
+
+      if (document.querySelector('#fio_sort').attributes.sort.value == 'up') {
+        document.querySelector('#fio_sort').children[0].children[1].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
+        customerList.sort((arr1, arr2) => arr1.name.localeCompare(arr2.name));
+      } else if (document.querySelector('#fio_sort').attributes.sort.value == 'down') {
+        document.querySelector('#fio_sort').children[0].children[1].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
+        customerList.sort(function (a, b) {
+          if (a.name > b.name) {
+            return -1;
+          }
+          if (b.name > a.name) {
+            return 1;
+          }
+          return 0;
+        });
+
+      }
+    } else if (sort == 'date_now_sort') {
+
+      document.querySelector('#id_sort').children[0].attributes['opacity'].value = 0.5;
+      document.querySelector('#fio_sort').children[0].attributes['opacity'].value = 0.5;
+      document.querySelector('#date_now_sort').children[0].attributes['opacity'].value = 1;
+      document.querySelector('#date_last_sort').children[0].attributes['opacity'].value = 0.5;
+
+      if (document.querySelector('#date_now_sort').attributes.sort.value == 'up') {
+        document.querySelector('#date_now_sort').children[0].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
+        customerList.sort((arr1, arr2) => arr1.createdAt.localeCompare(arr2.createdAt));
+      } else if (document.querySelector('#date_now_sort').attributes.sort.value == 'down') {
+        document.querySelector('#date_now_sort').children[0].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
+        customerList.sort(function (a, b) {
+          if (a.createdAt > b.createdAt) {
+            return -1;
+          }
+          if (b.createdAt > a.createdAt) {
+            return 1;
+          }
+          return 0;
+        });
+
+      }
     }
+
+    else if (sort == 'date_last_sort') {
+
+      document.querySelector('#id_sort').children[0].attributes['opacity'].value = 0.5;
+      document.querySelector('#fio_sort').children[0].attributes['opacity'].value = 0.5;
+      document.querySelector('#date_now_sort').children[0].attributes['opacity'].value = 0.5;
+      document.querySelector('#date_last_sort').children[0].attributes['opacity'].value = 1;
+
+      if (document.querySelector('#date_last_sort').attributes.sort.value == 'up') {
+        document.querySelector('#date_last_sort').children[0].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
+        customerList.sort((arr1, arr2) => arr1.updatedAt.localeCompare(arr2.updatedAt));
+      } else if (document.querySelector('#date_last_sort').attributes.sort.value == 'down') {
+        document.querySelector('#date_last_sort').children[0].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
+        customerList.sort(function (a, b) {
+          if (a.updatedAt > b.updatedAt) {
+            return -1;
+          }
+          if (b.updatedAt > a.updatedAt) {
+            return 1;
+          }
+          return 0;
+        });
+
+      }
+    }
+
+
     customerList.forEach(student => {
       getCustomerItem(student);
     });
@@ -710,234 +845,7 @@ async function deleteCustomer(id) {
 
 }
 
-// Этап 5. Создайте функцию сортировки массива студентов и добавьте события кликов на соответствующие колонки.
-function sort_func(sort_name) {
-  let id;
 
-  const regular_birth = /(\d{2}).(\d{2}).(\d{4})/;
-  const regular_learn = /(\d{4})-(\d{4})/gm;
-  switch (sort_name) {
-    case 'fio':
-      id = 'sort_fio';
-      break;
-    case 'fakultet':
-      id = 'sort_fak';
-      break;
-    case 'birth':
-      id = 'sort_birth';
-      break;
-    case 'learn':
-      id = 'sort_learn';
-      break;
-  }
-
-
-
-
-  for (let i = 0; i < document.querySelector('#header_table').children.length; i++) {
-    if (document.querySelector('#header_table').children[i].children[0].innerHTML == '▼') {
-      if (id != document.querySelector('#header_table').children[i].id) {
-        document.querySelector('#header_table').children[i].children[0].innerHTML = 'ᐁ';
-      }
-    }
-  }
-
-  if (sort_name == 'fio') {
-    if (document.querySelector('#sort_fio_activity').innerHTML == 'ᐁ') {
-      let table, rows, switching, i, x, y, shouldSwitch;
-      table = document.getElementById("main_table");
-      switching = true;
-
-      while (switching) {
-
-        switching = false;
-        rows = table.getElementsByTagName("TR");
-
-        for (i = 2; i < (rows.length - 1); i++) {
-          shouldSwitch = false;
-          x = rows[i].getElementsByTagName("TH")[0];
-          y = rows[i + 1].getElementsByTagName("TH")[0];
-          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-            shouldSwitch = true;
-            break;
-          }
-        }
-        if (shouldSwitch) {
-          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-          switching = true;
-        }
-      }
-      document.querySelector('#sort_fio_activity').innerHTML = '▼'
-    } else {
-      if (document.getElementById("search_fio").value == '' &&
-        document.getElementById("search_fakultet").value == '' &&
-        document.getElementById("search_year_start").value == '' &&
-        document.getElementById("search_year_end").value == '') {
-        cleaningTable();
-        renderCustomerTable();
-        document.querySelector('#sort_fio_activity').innerHTML = 'ᐁ';
-      } else {
-        document.getElementById("search_fio").value = '';
-        document.getElementById("search_fakultet").value = '';
-        document.getElementById("search_year_start").value = '';
-        document.getElementById("search_year_end").value = '';
-        cleaningTable();
-        renderCustomerTable();
-        document.querySelector('#sort_fio_activity').innerHTML = 'ᐁ';
-      }
-    }
-  } else if (sort_name == 'fakultet') {
-    if (document.querySelector('#sort_fak_activity').innerHTML == 'ᐁ') {
-      let table, rows, switching, i, x, y, shouldSwitch;
-      table = document.getElementById("main_table");
-      switching = true;
-
-      while (switching) {
-
-        switching = false;
-        rows = table.getElementsByTagName("TR");
-
-        for (i = 2; i < (rows.length - 1); i++) {
-          shouldSwitch = false;
-          x = rows[i].getElementsByTagName("TD")[0];
-          y = rows[i + 1].getElementsByTagName("TD")[0];
-          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-            shouldSwitch = true;
-            break;
-          }
-        }
-        if (shouldSwitch) {
-          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-          switching = true;
-        }
-      }
-      document.querySelector('#sort_fak_activity').innerHTML = '▼'
-    } else {
-      if (document.getElementById("search_fio").value == '' &&
-        document.getElementById("search_fakultet").value == '' &&
-        document.getElementById("search_year_start").value == '' &&
-        document.getElementById("search_year_end").value == '') {
-        cleaningTable();
-        renderCustomerTable();
-        document.querySelector('#sort_fak_activity').innerHTML = 'ᐁ';
-      } else {
-        document.getElementById("search_fio").value = '';
-        document.getElementById("search_fakultet").value = '';
-        document.getElementById("search_year_start").value = '';
-        document.getElementById("search_year_end").value = '';
-        cleaningTable();
-        renderCustomerTable();
-        document.querySelector('#sort_fak_activity').innerHTML = 'ᐁ';
-      }
-    }
-  } else if (sort_name == 'birth') {
-
-    if (document.querySelector('#sort_birth_activity').innerHTML == 'ᐁ') {
-      let table, rows, switching, i, x, y, shouldSwitch;
-      table = document.getElementById("main_table");
-      switching = true;
-
-      while (switching) {
-
-        switching = false;
-        rows = table.getElementsByTagName("TR");
-
-        for (i = 2; i < (rows.length - 1); i++) {
-          shouldSwitch = false;
-          x = rows[i].getElementsByTagName("TD")[1];
-          y = rows[i + 1].getElementsByTagName("TD")[1];
-          let xDate = new Date(`${x.innerHTML.match(regular_birth)[2]},${x.innerHTML.match(regular_birth)[1]},${x.innerHTML.match(regular_birth)[3]}`).getTime();
-          let yDate = new Date(`${y.innerHTML.match(regular_birth)[2]},${y.innerHTML.match(regular_birth)[1]},${y.innerHTML.match(regular_birth)[3]}`).getTime();
-
-          if (xDate > yDate) {
-            shouldSwitch = true;
-            break;
-          }
-        }
-        if (shouldSwitch) {
-          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-          switching = true;
-        }
-      }
-      document.querySelector('#sort_birth_activity').innerHTML = '▼'
-    } else {
-      if (document.getElementById("search_fio").value == '' &&
-        document.getElementById("search_fakultet").value == '' &&
-        document.getElementById("search_year_start").value == '' &&
-        document.getElementById("search_year_end").value == '') {
-        cleaningTable();
-        renderCustomerTable();
-        document.querySelector('#sort_birth_activity').innerHTML = 'ᐁ';
-      } else {
-        document.getElementById("search_fio").value = '';
-        document.getElementById("search_fakultet").value = '';
-        document.getElementById("search_year_start").value = '';
-        document.getElementById("search_year_end").value = '';
-        cleaningTable();
-        renderCustomerTable();
-        document.querySelector('#sort_birth_activity').innerHTML = 'ᐁ';
-      }
-
-
-    }
-  } else if (sort_name == 'learn') {
-    if (document.querySelector('#sort_learn_activity').innerHTML == 'ᐁ') {
-      let table, rows, switching, i, x, y, shouldSwitch;
-      table = document.getElementById("main_table");
-      switching = true;
-
-      while (switching) {
-
-        switching = false;
-        rows = table.getElementsByTagName("TR");
-
-        for (i = 2; i < (rows.length - 1); i++) {
-          shouldSwitch = false;
-          x = rows[i].getElementsByTagName("TD")[2];
-          y = rows[i + 1].getElementsByTagName("TD")[2];
-          let xDate = x.innerHTML.match(regular_learn);
-          let yDate = y.innerHTML.match(regular_learn);
-          if (xDate != null && yDate != null) {
-            if (xDate > yDate) {
-              shouldSwitch = true;
-              break;
-            }
-          } else if (xDate != null && yDate == null) {
-            shouldSwitch = true;
-            break;
-          }
-
-        }
-        if (shouldSwitch) {
-          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-          switching = true;
-        }
-      }
-      document.querySelector('#sort_learn_activity').innerHTML = '▼'
-    } else {
-      if (document.getElementById("search_fio").value == '' &&
-        document.getElementById("search_fakultet").value == '' &&
-        document.getElementById("search_year_start").value == '' &&
-        document.getElementById("search_year_end").value == '') {
-        cleaningTable();
-        renderCustomerTable();
-        document.querySelector('#sort_learn_activity').innerHTML = 'ᐁ';
-      } else {
-        document.getElementById("search_fio").value = '';
-        document.getElementById("search_fakultet").value = '';
-        document.getElementById("search_year_start").value = '';
-        document.getElementById("search_year_end").value = '';
-        cleaningTable();
-        renderCustomerTable();
-        document.querySelector('#sort_learn_activity').innerHTML = 'ᐁ';
-      }
-    }
-  }
-
-
-
-
-}
 
 
 
