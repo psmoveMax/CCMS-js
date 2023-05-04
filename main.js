@@ -755,8 +755,10 @@ function sortData(type) {
 
     let arrayTable = Array();
 
-    for (let i = 1; i < document.querySelector('#table_data').children.length; i++) {
-      arrayTable.push(document.querySelector('#table_data').children[i].children[0].innerText);
+    const table = document.querySelector('#table_data');
+
+    for (let i = 1; i < table.children.length; i++) {
+      arrayTable.push(table.children[i].children[0].innerText);
     }
 
     console.log(arrayTable);
@@ -771,20 +773,22 @@ function sortData(type) {
 
 
 
+
     if (document.querySelector('#id_sort').attributes.sort.value == 'up') {
       document.querySelector('#id_sort').children[0].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
       arrayTable.sort((arr1, arr2) => arr1 - arr2);
 
-      for (let i = 1; i < document.querySelector('#table_data').children.length - 1; i++) {
+      for (let i = 1; i < table.children.length - 1; i++) {
 
         console.log('test');
-        let first_data = document.querySelector('#table_data').children[i];
-        let second_data = document.querySelector('#table_data').children[i + 1];
+        let first_data = table.children[i];
+        let second_data = table.children[i + 1];
 
         if (first_data.children[0].innerHTML < second_data.children[0].innerHTML) {
-          console.log('yes');
-          document.querySelector('#table_data').children[i] = second_data;
-          document.querySelector('#table_data').children[i + 1] = first_data;
+          console.log(`Переместил`);
+          table.rows[i].parentNode.insertBefore(table.rows[i + 1], table.rows[i]);
+        } else {
+
         }
       }
 
