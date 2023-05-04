@@ -18,8 +18,8 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       document.querySelector('#id_sort').attributes.sort.value = 'up'
     }
-    cleaningTable();
-    renderCustomerTable('id_sort');
+    // cleaningTable();
+    sortData('id_sort');
     console.log('te');
 
   });
@@ -367,6 +367,18 @@ function getCustomerItem(customer) {
   const keysContacts = Object.keys(customer.contacts);
 
   contacts.setAttribute('style', 'width:140px');
+  fio.setAttribute('style', 'font-weight: 400');
+
+
+  table.setAttribute('style', 'width:100%');
+
+  id.setAttribute('style', 'width:5%');
+  fio.setAttribute('style', 'width:30%');
+  date_td.setAttribute('style', 'width:15%');
+  time_td.setAttribute('style', 'width:15%');
+  contacts.setAttribute('style', 'width:16%');
+  actions_td.setAttribute('style', 'width:25%');
+
 
   for (let i = 0; i < keysContacts.length; i++) {
 
@@ -704,54 +716,142 @@ async function renderCustomerTable(sort = 'standard') {
 
 
 
-    if (sort == 'id_sort' || sort == 'standard') {
-      document.querySelector('#id_sort').children[0].attributes['opacity'].value = 1;
-      document.querySelector('#fio_sort').children[0].attributes['opacity'].value = 0.5;
-      document.querySelector('#date_now_sort').children[0].attributes['opacity'].value = 0.5;
-      document.querySelector('#date_last_sort').children[0].attributes['opacity'].value = 0.5;
+
+    document.querySelector('#id_sort').children[0].attributes['opacity'].value = 1;
+    document.querySelector('#sort_id').style.color = '#9873FF';
+    document.querySelector('#fio_sort').children[0].attributes['opacity'].value = 0.5;
+    document.querySelector('#sort_fio').style.color = '#B0B0B0';
+    document.querySelector('#date_now_sort').children[0].attributes['opacity'].value = 0.5;
+    document.querySelector('#sort_date_now').style.color = '#B0B0B0';
+    document.querySelector('#date_last_sort').children[0].attributes['opacity'].value = 0.5;
+    document.querySelector('#sort_date_last').style.color = '#B0B0B0';
 
 
 
-      if (document.querySelector('#id_sort').attributes.sort.value == 'up') {
-        document.querySelector('#id_sort').children[0].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
-        customerList.sort((arr1, arr2) => arr1.id - arr2.id);
-      } else if (document.querySelector('#id_sort').attributes.sort.value == 'down') {
-        document.querySelector('#id_sort').children[0].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
-        function sortDown(a, b) {
-          return a.id > b.id ? -1 : b.id > a.id ? 1 : 0;
+    if (document.querySelector('#id_sort').attributes.sort.value == 'up') {
+      document.querySelector('#id_sort').children[0].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
+      customerList.sort((arr1, arr2) => arr1.id - arr2.id);
+    } else if (document.querySelector('#id_sort').attributes.sort.value == 'down') {
+      document.querySelector('#id_sort').children[0].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
+      function sortDown(a, b) {
+        return a.id > b.id ? -1 : b.id > a.id ? 1 : 0;
+      }
+      customerList.sort(sortDown);
+    }
+
+
+    customerList.forEach(student => {
+      getCustomerItem(student);
+    });
+  }
+
+
+}
+
+
+function sortData(type) {
+
+  if (type == 'id_sort') {
+
+    let arrayTable = Array();
+
+    for (let i = 1; i < document.querySelector('#table_data').children.length; i++) {
+      arrayTable.push(document.querySelector('#table_data').children[i].children[0].innerText);
+    }
+
+    console.log(arrayTable);
+    document.querySelector('#id_sort').children[0].attributes['opacity'].value = 1;
+    document.querySelector('#sort_id').style.color = '#9873FF';
+    document.querySelector('#fio_sort').children[0].attributes['opacity'].value = 0.5;
+    document.querySelector('#sort_fio').style.color = '#B0B0B0';
+    document.querySelector('#date_now_sort').children[0].attributes['opacity'].value = 0.5;
+    document.querySelector('#sort_date_now').style.color = '#B0B0B0';
+    document.querySelector('#date_last_sort').children[0].attributes['opacity'].value = 0.5;
+    document.querySelector('#sort_date_last').style.color = '#B0B0B0';
+
+
+
+    if (document.querySelector('#id_sort').attributes.sort.value == 'up') {
+      document.querySelector('#id_sort').children[0].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
+      arrayTable.sort((arr1, arr2) => arr1 - arr2);
+
+      for (let i = 1; i < document.querySelector('#table_data').children.length - 1; i++) {
+
+        console.log('test');
+        let first_data = document.querySelector('#table_data').children[i];
+        let second_data = document.querySelector('#table_data').children[i + 1];
+
+        if (first_data.children[0].innerHTML < second_data.children[0].innerHTML) {
+          console.log('yes');
+          document.querySelector('#table_data').children[i] = second_data;
+          document.querySelector('#table_data').children[i + 1] = first_data;
         }
-        customerList.sort(sortDown);
       }
 
-    } else if (sort == 'fio_sort') {
 
-      document.querySelector('#id_sort').children[0].attributes['opacity'].value = 0.5;
-      document.querySelector('#fio_sort').children[0].attributes['opacity'].value = 1;
-      document.querySelector('#date_now_sort').children[0].attributes['opacity'].value = 0.5;
-      document.querySelector('#date_last_sort').children[0].attributes['opacity'].value = 0.5;
-
-      if (document.querySelector('#fio_sort').attributes.sort.value == 'up') {
-        document.querySelector('#fio_sort').children[0].children[1].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
-        customerList.sort((arr1, arr2) => arr1.name.localeCompare(arr2.name));
-      } else if (document.querySelector('#fio_sort').attributes.sort.value == 'down') {
-        document.querySelector('#fio_sort').children[0].children[1].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
-        customerList.sort(function (a, b) {
-          if (a.name > b.name) {
-            return -1;
-          }
-          if (b.name > a.name) {
-            return 1;
-          }
-          return 0;
-        });
-
+    } else if (document.querySelector('#id_sort').attributes.sort.value == 'down') {
+      document.querySelector('#id_sort').children[0].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
+      function sortDown(a, b) {
+        return a > b ? -1 : b > a ? 1 : 0;
       }
-    } else if (sort == 'date_now_sort') {
+      arrayTable.sort(sortDown);
 
-      document.querySelector('#id_sort').children[0].attributes['opacity'].value = 0.5;
+
+      for (let i = 1; i < document.querySelector('#table_data').children.length - 1; i++) {
+
+        console.log('test');
+        let first_data = document.querySelector('#table_data').children[i];
+        let second_data = document.querySelector('#table_data').children[i + 1];
+
+        if (first_data.children[0].innerHTML > second_data.children[0].innerHTML) {
+          document.querySelector('#table_data').children[i] = second_data;
+          document.querySelector('#table_data').children[i + 1] = first_data;
+        }
+      }
+    }
+
+
+
+
+
+
+    console.log(arrayTable);
+  } else if (type == 'fio_sort') {
+
+    document.querySelector('#id_sort').children[0].attributes['opacity'].value = 1;
+    document.querySelector('#sort_id').style.color = '#B0B0B0';
+    document.querySelector('#fio_sort').children[0].attributes['opacity'].value = 0.5;
+    document.querySelector('#sort_fio').style.color = '#9873FF';
+    document.querySelector('#date_now_sort').children[0].attributes['opacity'].value = 0.5;
+    document.querySelector('#sort_date_now').style.color = '#B0B0B0';
+    document.querySelector('#date_last_sort').children[0].attributes['opacity'].value = 0.5;
+    document.querySelector('#sort_date_last').style.color = '#B0B0B0';
+
+    if (document.querySelector('#fio_sort').attributes.sort.value == 'up') {
+      document.querySelector('#fio_sort').children[0].children[1].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
+      customerList.sort((arr1, arr2) => arr1.name.localeCompare(arr2.name));
+    } else if (document.querySelector('#fio_sort').attributes.sort.value == 'down') {
+      document.querySelector('#fio_sort').children[0].children[1].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
+      customerList.sort(function (a, b) {
+        if (a.name > b.name) {
+          return -1;
+        }
+        if (b.name > a.name) {
+          return 1;
+        }
+        return 0;
+      });
+
+    } else if (type == 'date_now_sort') {
+
+      document.querySelector('#id_sort').children[0].attributes['opacity'].value = 1;
+      document.querySelector('#sort_id').style.color = '#B0B0B0';
       document.querySelector('#fio_sort').children[0].attributes['opacity'].value = 0.5;
-      document.querySelector('#date_now_sort').children[0].attributes['opacity'].value = 1;
+      document.querySelector('#sort_fio').style.color = '#B0B0B0';
+      document.querySelector('#date_now_sort').children[0].attributes['opacity'].value = 0.5;
+      document.querySelector('#sort_date_now').style.color = '#9873FF';
       document.querySelector('#date_last_sort').children[0].attributes['opacity'].value = 0.5;
+      document.querySelector('#sort_date_last').style.color = '#B0B0B0';
 
       if (document.querySelector('#date_now_sort').attributes.sort.value == 'up') {
         document.querySelector('#date_now_sort').children[0].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
@@ -769,14 +869,18 @@ async function renderCustomerTable(sort = 'standard') {
         });
 
       }
-    }
 
-    else if (sort == 'date_last_sort') {
+    } else if (type == 'date_last_sort') {
 
-      document.querySelector('#id_sort').children[0].attributes['opacity'].value = 0.5;
+
+      document.querySelector('#id_sort').children[0].attributes['opacity'].value = 1;
+      document.querySelector('#sort_id').style.color = '#B0B0B0';
       document.querySelector('#fio_sort').children[0].attributes['opacity'].value = 0.5;
+      document.querySelector('#sort_fio').style.color = '#B0B0B0';
       document.querySelector('#date_now_sort').children[0].attributes['opacity'].value = 0.5;
-      document.querySelector('#date_last_sort').children[0].attributes['opacity'].value = 1;
+      document.querySelector('#sort_date_now').style.color = '#B0B0B0';
+      document.querySelector('#date_last_sort').children[0].attributes['opacity'].value = 0.5;
+      document.querySelector('#sort_date_last').style.color = '#9873FF';
 
       if (document.querySelector('#date_last_sort').attributes.sort.value == 'up') {
         document.querySelector('#date_last_sort').children[0].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
@@ -794,23 +898,10 @@ async function renderCustomerTable(sort = 'standard') {
         });
 
       }
+
     }
-
-
-    customerList.forEach(student => {
-      getCustomerItem(student);
-    });
   }
-
-
-
-
-
-
-
-
 }
-
 
 async function renderCustomer(id) {
 
