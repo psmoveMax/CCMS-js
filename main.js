@@ -33,8 +33,8 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       document.querySelector('#fio_sort').attributes.sort.value = 'up'
     }
-    cleaningTable();
-    renderCustomerTable('fio_sort');
+    // cleaningTable();
+    sortData('fio_sort');
     console.log('te');
 
   });
@@ -47,8 +47,9 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       document.querySelector('#date_now_sort').attributes.sort.value = 'up'
     }
-    cleaningTable();
-    renderCustomerTable('date_now_sort');
+    // cleaningTable();
+    console.log('yuppi');
+    sortData('date_now_sort');
     console.log('te');
 
   });
@@ -62,8 +63,8 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       document.querySelector('#date_last_sort').attributes.sort.value = 'up'
     }
-    cleaningTable();
-    renderCustomerTable('date_last_sort');
+    // cleaningTable();
+    sortData('date_last_sort');
     console.log('te');
 
   });
@@ -668,7 +669,7 @@ function cleaningTable() {
 }
 
 
-async function renderCustomerTable(sort = 'standard') {
+async function renderCustomerTable() {
   console.log(document.querySelector("main_body"));
 
   function response(url = 'http://localhost:3000/api/customers') {
@@ -776,42 +777,63 @@ function sortData(type) {
 
     if (document.querySelector('#id_sort').attributes.sort.value == 'up') {
       document.querySelector('#id_sort').children[0].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
-      arrayTable.sort((arr1, arr2) => arr1 - arr2);
+      function sortTable() {
+        console.log('start');
+        let table, rows, switching, i, x, y, shouldSwitch;
+        table = document.querySelector('#table_data');
+        switching = true;
+        while (switching) {
+          switching = false;
+          rows = table.rows;
+          for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TD")[0];
+            y = rows[i + 1].getElementsByTagName("TD")[0];
 
-      for (let i = 1; i < table.children.length - 1; i++) {
-
-        console.log('test');
-        let first_data = table.children[i];
-        let second_data = table.children[i + 1];
-
-        if (first_data.children[0].innerHTML < second_data.children[0].innerHTML) {
-          console.log(`Переместил`);
-          table.rows[i].parentNode.insertBefore(table.rows[i + 1], table.rows[i]);
-        } else {
-
+            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+              shouldSwitch = true;
+              break;
+            }
+          }
+          if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+          }
         }
       }
 
+      sortTable();
 
     } else if (document.querySelector('#id_sort').attributes.sort.value == 'down') {
       document.querySelector('#id_sort').children[0].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
-      function sortDown(a, b) {
-        return a > b ? -1 : b > a ? 1 : 0;
-      }
-      arrayTable.sort(sortDown);
 
+      function sortTable() {
+        console.log('start');
+        let table, rows, switching, i, x, y, shouldSwitch;
+        table = document.querySelector('#table_data');
+        switching = true;
+        while (switching) {
+          switching = false;
+          rows = table.rows;
+          for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TD")[0];
+            y = rows[i + 1].getElementsByTagName("TD")[0];
 
-      for (let i = 1; i < document.querySelector('#table_data').children.length - 1; i++) {
-
-        console.log('test');
-        let first_data = document.querySelector('#table_data').children[i];
-        let second_data = document.querySelector('#table_data').children[i + 1];
-
-        if (first_data.children[0].innerHTML > second_data.children[0].innerHTML) {
-          document.querySelector('#table_data').children[i] = second_data;
-          document.querySelector('#table_data').children[i + 1] = first_data;
+            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+              shouldSwitch = true;
+              break;
+            }
+          }
+          if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+          }
         }
       }
+
+      sortTable();
+
     }
 
 
@@ -822,9 +844,9 @@ function sortData(type) {
     console.log(arrayTable);
   } else if (type == 'fio_sort') {
 
-    document.querySelector('#id_sort').children[0].attributes['opacity'].value = 1;
+    document.querySelector('#id_sort').children[0].attributes['opacity'].value = 0.5;
     document.querySelector('#sort_id').style.color = '#B0B0B0';
-    document.querySelector('#fio_sort').children[0].attributes['opacity'].value = 0.5;
+    document.querySelector('#fio_sort').children[0].attributes['opacity'].value = 1;
     document.querySelector('#sort_fio').style.color = '#9873FF';
     document.querySelector('#date_now_sort').children[0].attributes['opacity'].value = 0.5;
     document.querySelector('#sort_date_now').style.color = '#B0B0B0';
@@ -833,79 +855,216 @@ function sortData(type) {
 
     if (document.querySelector('#fio_sort').attributes.sort.value == 'up') {
       document.querySelector('#fio_sort').children[0].children[1].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
-      customerList.sort((arr1, arr2) => arr1.name.localeCompare(arr2.name));
+      function sortTable() {
+        console.log('start');
+        let table, rows, switching, i, x, y, shouldSwitch;
+        table = document.querySelector('#table_data');
+        switching = true;
+        while (switching) {
+          switching = false;
+          rows = table.rows;
+          for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TH")[0];
+            y = rows[i + 1].getElementsByTagName("TH")[0];
+
+            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+              console.log('oppo');
+              shouldSwitch = true;
+              break;
+            }
+          }
+          if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+          }
+        }
+      }
+
+      sortTable();
+
+
+
     } else if (document.querySelector('#fio_sort').attributes.sort.value == 'down') {
       document.querySelector('#fio_sort').children[0].children[1].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
-      customerList.sort(function (a, b) {
-        if (a.name > b.name) {
-          return -1;
-        }
-        if (b.name > a.name) {
-          return 1;
-        }
-        return 0;
-      });
+      function sortTable() {
+        console.log('start');
+        let table, rows, switching, i, x, y, shouldSwitch;
+        table = document.querySelector('#table_data');
+        switching = true;
+        while (switching) {
+          switching = false;
+          rows = table.rows;
+          for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TH")[0];
+            y = rows[i + 1].getElementsByTagName("TH")[0];
 
-    } else if (type == 'date_now_sort') {
-
-      document.querySelector('#id_sort').children[0].attributes['opacity'].value = 1;
-      document.querySelector('#sort_id').style.color = '#B0B0B0';
-      document.querySelector('#fio_sort').children[0].attributes['opacity'].value = 0.5;
-      document.querySelector('#sort_fio').style.color = '#B0B0B0';
-      document.querySelector('#date_now_sort').children[0].attributes['opacity'].value = 0.5;
-      document.querySelector('#sort_date_now').style.color = '#9873FF';
-      document.querySelector('#date_last_sort').children[0].attributes['opacity'].value = 0.5;
-      document.querySelector('#sort_date_last').style.color = '#B0B0B0';
-
-      if (document.querySelector('#date_now_sort').attributes.sort.value == 'up') {
-        document.querySelector('#date_now_sort').children[0].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
-        customerList.sort((arr1, arr2) => arr1.createdAt.localeCompare(arr2.createdAt));
-      } else if (document.querySelector('#date_now_sort').attributes.sort.value == 'down') {
-        document.querySelector('#date_now_sort').children[0].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
-        customerList.sort(function (a, b) {
-          if (a.createdAt > b.createdAt) {
-            return -1;
+            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+              console.log('oppo2');
+              shouldSwitch = true;
+              break;
+            }
           }
-          if (b.createdAt > a.createdAt) {
-            return 1;
+          if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
           }
-          return 0;
-        });
-
+        }
       }
 
-    } else if (type == 'date_last_sort') {
-
-
-      document.querySelector('#id_sort').children[0].attributes['opacity'].value = 1;
-      document.querySelector('#sort_id').style.color = '#B0B0B0';
-      document.querySelector('#fio_sort').children[0].attributes['opacity'].value = 0.5;
-      document.querySelector('#sort_fio').style.color = '#B0B0B0';
-      document.querySelector('#date_now_sort').children[0].attributes['opacity'].value = 0.5;
-      document.querySelector('#sort_date_now').style.color = '#B0B0B0';
-      document.querySelector('#date_last_sort').children[0].attributes['opacity'].value = 0.5;
-      document.querySelector('#sort_date_last').style.color = '#9873FF';
-
-      if (document.querySelector('#date_last_sort').attributes.sort.value == 'up') {
-        document.querySelector('#date_last_sort').children[0].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
-        customerList.sort((arr1, arr2) => arr1.updatedAt.localeCompare(arr2.updatedAt));
-      } else if (document.querySelector('#date_last_sort').attributes.sort.value == 'down') {
-        document.querySelector('#date_last_sort').children[0].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
-        customerList.sort(function (a, b) {
-          if (a.updatedAt > b.updatedAt) {
-            return -1;
-          }
-          if (b.updatedAt > a.updatedAt) {
-            return 1;
-          }
-          return 0;
-        });
-
-      }
+      sortTable();
 
     }
+  } else if (type == 'date_now_sort') {
+    document.querySelector('#id_sort').children[0].attributes['opacity'].value = 0.5;
+    document.querySelector('#sort_id').style.color = '#B0B0B0';
+    document.querySelector('#fio_sort').children[0].attributes['opacity'].value = 0.5;
+    document.querySelector('#sort_fio').style.color = '#B0B0B0';
+    document.querySelector('#date_now_sort').children[0].attributes['opacity'].value = 1;
+    document.querySelector('#sort_date_now').style.color = '#9873FF';
+    document.querySelector('#date_last_sort').children[0].attributes['opacity'].value = 0.5;
+    document.querySelector('#sort_date_last').style.color = '#B0B0B0';
+
+    if (document.querySelector('#date_now_sort').attributes.sort.value == 'up') {
+
+
+      document.querySelector('#date_now_sort').children[0].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
+      function sortTable() {
+        console.log('start');
+        let table, rows, switching, i, x, y, shouldSwitch;
+        table = document.querySelector('#table_data');
+        switching = true;
+        while (switching) {
+          switching = false;
+          rows = table.rows;
+          for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TD")[1].children[0];
+            y = rows[i + 1].getElementsByTagName("TD")[1].children[0];
+
+            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+              console.log('oppo');
+              shouldSwitch = true;
+              break;
+            }
+          }
+          if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+          }
+        }
+      }
+
+      sortTable();
+    } else if (document.querySelector('#date_now_sort').attributes.sort.value == 'down') {
+
+      document.querySelector('#date_now_sort').children[0].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
+      function sortTable() {
+        console.log('start');
+        let table, rows, switching, i, x, y, shouldSwitch;
+        table = document.querySelector('#table_data');
+        switching = true;
+        while (switching) {
+          switching = false;
+          rows = table.rows;
+          for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TD")[1].children[0];
+            y = rows[i + 1].getElementsByTagName("TD")[1].children[0];
+
+            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+              console.log('oppo');
+              shouldSwitch = true;
+              break;
+            }
+          }
+          if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+          }
+        }
+      }
+
+      sortTable();
+
+    }
+
+  } else if (type == 'date_last_sort') {
+
+
+    document.querySelector('#id_sort').children[0].attributes['opacity'].value = 0.5;
+    document.querySelector('#sort_id').style.color = '#B0B0B0';
+    document.querySelector('#fio_sort').children[0].attributes['opacity'].value = 0.5;
+    document.querySelector('#sort_fio').style.color = '#B0B0B0';
+    document.querySelector('#date_now_sort').children[0].attributes['opacity'].value = 0.5;
+    document.querySelector('#sort_date_now').style.color = '#B0B0B0';
+    document.querySelector('#date_last_sort').children[0].attributes['opacity'].value = 1;
+    document.querySelector('#sort_date_last').style.color = '#9873FF';
+
+    if (document.querySelector('#date_last_sort').attributes.sort.value == 'up') {
+      document.querySelector('#date_last_sort').children[0].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
+      function sortTable() {
+        console.log('start');
+        let table, rows, switching, i, x, y, shouldSwitch;
+        table = document.querySelector('#table_data');
+        switching = true;
+        while (switching) {
+          switching = false;
+          rows = table.rows;
+          for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TH")[1].children[0];
+            y = rows[i + 1].getElementsByTagName("TH")[1].children[0];
+
+            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+              console.log('oppo');
+              shouldSwitch = true;
+              break;
+            }
+          }
+          if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+          }
+        }
+      }
+      sortTable();
+
+    } else if (document.querySelector('#date_last_sort').attributes.sort.value == 'down') {
+      document.querySelector('#date_last_sort').children[0].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
+      function sortTable() {
+        console.log('start');
+        let table, rows, switching, i, x, y, shouldSwitch;
+        table = document.querySelector('#table_data');
+        switching = true;
+        while (switching) {
+          switching = false;
+          rows = table.rows;
+          for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TH")[1].children[0];
+            y = rows[i + 1].getElementsByTagName("TH")[1].children[0];
+
+            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+              console.log('oppo');
+              shouldSwitch = true;
+              break;
+            }
+          }
+          if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+          }
+        }
+      }
+      sortTable();
+
+    }
+
   }
 }
+
 
 async function renderCustomer(id) {
 
@@ -953,7 +1112,10 @@ function debounce(func, timeout = 300) {
   };
 }
 async function saveInput() {
+
+
   cleaningTable();
+
   let fio_input, table, tr, i;
   fio_input = document.getElementById("search_fio");
   filter_fio = fio_input.value.toUpperCase();
@@ -968,15 +1130,51 @@ async function saveInput() {
   const customerList = await response.json();
   console.log(customerList);
 
+  if (document.querySelector('#search_fio').value != '') {
 
-  customerList.forEach(student => {
-    const fio = `${student.name} ${student.surname} ${student.lastname} `;
-    if (fio.toUpperCase().indexOf(filter_fio) > -1) {
+    customerList.forEach(student => {
+      const fio = `${student.name} ${student.surname} ${student.lastname} `;
+      if (fio.toUpperCase().indexOf(filter_fio) > -1) {
+        getCustomerItem(student);
+
+      }
+    });
+
+
+  } else {
+
+
+    document.querySelector('#id_sort').attributes.sort.value = 'up';
+    customerList.sort((arr1, arr2) => arr1.id - arr2.id);
+
+    clearSort();
+
+    customerList.forEach(student => {
       getCustomerItem(student);
+    });
 
-    }
-  });
+  }
+
+
+
 }
 
 const search_func = debounce(() => saveInput());
 
+
+
+function clearSort() {
+  console.log('очистка');
+  document.querySelector('#id_sort').children[0].attributes['opacity'].value = 1;
+  document.querySelector('#id_sort').children[0].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
+  document.querySelector('#sort_id').style.color = '#9873FF';
+  document.querySelector('#fio_sort').children[0].attributes['opacity'].value = 0.5;
+  document.querySelector('#fio_sort').children[0].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
+  document.querySelector('#sort_fio').style.color = '#B0B0B0';
+  document.querySelector('#date_now_sort').children[0].attributes['opacity'].value = 0.5;
+  document.querySelector('#date_now_sort').children[0].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
+  document.querySelector('#sort_date_now').style.color = '#B0B0B0';
+  document.querySelector('#date_last_sort').children[0].attributes['opacity'].value = 0.5;
+  document.querySelector('#date_last_sort').children[0].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
+  document.querySelector('#sort_date_last').style.color = '#B0B0B0';
+}
