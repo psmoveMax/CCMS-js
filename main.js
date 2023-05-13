@@ -213,7 +213,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   btn_add.onclick = function () {
-    modal_add.style.display = "block";
+    modal_add.style.visibility = 'visible';
+    modal_add.style.opacity = '1';
   }
 
 
@@ -221,43 +222,53 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Когда пользователь нажимает на <span> (x), закройте модальное окно
   span_add.onclick = function () {
-    modal_add.style.display = "none";
+    modal_add.style.visibility = 'hidden';
+    modal_add.style.opacity = '0';
   }
 
   span_delete.onclick = function () {
-    modal_delete.style.display = "none";
+    modal_delete.style.visibility = 'hidden';
+    modal_delete.style.opacity = '0';
   }
 
   span_info.onclick = function () {
-    modal_info.style.display = "none";
+    modal_info.style.visibility = 'hidden';
+    modal_info.style.opacity = '0';
   }
 
   bottom_delete.onclick = function () {
-    modal_delete.style.display = "none";
+    modal_delete.style.visibility = 'hidden';
+    modal_delete.style.opacity = '0';
   }
 
   bottom_info.onclick = function () {
-    modal_info.style.display = "none";
+    modal_info.style.visibility = 'hidden';
+    modal_info.style.opacity = '0';
   }
 
   span_edit.onclick = function () {
-    modal_edit.style.display = "none";
+    modal_edit.style.visibility = 'hidden';
+    modal_edit.style.opacity = '0';
     removeContact();
   }
 
 
 
   bottom_close.onclick = function () {
-    modal_add.style.display = "none";
+    modal_add.style.visibility = 'hidden';
+    modal_add.style.opacity = '0';
   }
 
 
   // Когда пользователь щелкает в любом месте за пределами модального, закройте его
   window.onclick = function (event) {
     if (event.target == modal_add || event.target == modal_edit || event.target == modal_delete) {
-      modal_add.style.display = "none";
-      modal_edit.style.display = "none";
-      modal_delete.style.display = "none";
+      modal_add.style.visibility = 'hidden';
+      modal_add.style.opacity = '0';
+      modal_edit.style.visibility = 'hidden';
+      modal_edit.style.opacity = '0';
+      modal_delete.style.visibility = 'hidden';
+      modal_delete.style.opacity = '0';
       removeContact();
     }
   }
@@ -510,8 +521,8 @@ async function changeCustomer(id) {
   const customer_lastname = document.getElementById("lastname_edit");
 
   const btn_resave = document.getElementById("btn_resave");
-
-  modal_edit.style.display = "block";
+  modal_edit.style.visibility = 'visible';
+  modal_edit.style.opacity = '1';
   btn_delete.setAttribute('onclick', `modalEditDelete(${id})`);
   customer_id.innerText = `ID: ${id}`;
 
@@ -605,7 +616,8 @@ async function changeCustomer(id) {
       contacts.push(contactPush);
 
     }
-
+    modal_edit.style.visibility = 'hidden';
+    modal_edit.style.opacity = '0';
     const response = await fetch(`http://localhost:3000/api/customers/${id}`, {
       method: 'PATCH',
       body: JSON.stringify({
@@ -623,7 +635,7 @@ async function changeCustomer(id) {
     if (customer.hasOwnProperty("errors")) {
       infoModal('Ошибка!', customer);
     } else {
-      document.querySelector('#modal_edit').style.display = 'none';
+
       removeContact();
       cleaningTable();
       renderCustomerTable();
@@ -638,8 +650,8 @@ async function changeCustomer(id) {
 async function modalEditDelete(id) {
 
 
-
-  document.getElementById("modal_edit").style.display = "none";
+  modal_edit.style.visibility = 'hidden';
+  modal_edit.style.opacity = '0';
 
   const response = await fetch(`http://localhost:3000/api/customers/${id}`, {
     method: 'DELETE'
@@ -1080,7 +1092,8 @@ async function renderCustomer(id) {
 async function deleteCustomer(id) {
   const modal_delete = document.getElementById("modal_delete");
   const delete_button = document.querySelector('#btn_delete_customer');
-  modal_delete.style.display = "block";
+  modal_delete.style.visibility = 'visible';
+  modal_delete.style.opacity = '1';
 
   delete_button.onclick = async function () {
     modal_delete.style.display = "none";
@@ -1131,7 +1144,7 @@ async function saveInput() {
   console.log(customerList);
 
   if (document.querySelector('#search_fio').value != '') {
-
+    clearSort();
     customerList.forEach(student => {
       const fio = `${student.name} ${student.surname} ${student.lastname} `;
       if (fio.toUpperCase().indexOf(filter_fio) > -1) {
