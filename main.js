@@ -3,11 +3,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-
   const form = document.querySelector('#main_filter');
   form.addEventListener('submit', (event) => {
     event.preventDefault();
   });
+
 
 
   document.querySelector('#id_sort').addEventListener("click", async e => {
@@ -18,9 +18,8 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       document.querySelector('#id_sort').attributes.sort.value = 'up'
     }
-    // cleaningTable();
+
     sortData('id_sort');
-    console.log('te');
 
   });
 
@@ -33,9 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       document.querySelector('#fio_sort').attributes.sort.value = 'up'
     }
-    // cleaningTable();
     sortData('fio_sort');
-    console.log('te');
 
   });
 
@@ -47,11 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       document.querySelector('#date_now_sort').attributes.sort.value = 'up'
     }
-    // cleaningTable();
-    console.log('yuppi');
     sortData('date_now_sort');
-    console.log('te');
-
   });
 
 
@@ -63,13 +56,11 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       document.querySelector('#date_last_sort').attributes.sort.value = 'up'
     }
-    // cleaningTable();
     sortData('date_last_sort');
-    console.log('te');
 
   });
 
-
+  // Кнопка добавление клиента
   document.querySelector('#btn_save').addEventListener("click", async e => {
     e.preventDefault();
     let name = document.getElementById('name').value.trim();
@@ -105,19 +96,16 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
     const customer = await response.json();
-    console.log(customer);
     if (customer.hasOwnProperty("errors")) {
+      const modal_info = document.querySelector('#modal_info');
       infoModal('Ошибка!', customer);
+      modal_info.style.visibility = 'visible';
+      modal_info.style.opacity = '1';
     } else {
       document.querySelector('#modal_add').style.display = 'none';
       cleaningTable();
       renderCustomerTable();
     }
-
-
-
-
-
 
   });
 
@@ -179,8 +167,6 @@ document.addEventListener("DOMContentLoaded", function () {
       if (document.querySelector('#options_add').children.length == 10) {
         document.querySelector("#btn_add_contact_add").style.display = 'none';
       }
-    } else {
-
     }
   });
 
@@ -190,11 +176,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (document.querySelector('#options_edit').children.length == 10) {
         document.querySelector("#btn_add_contact_edit").style.display = 'none';
       }
-    } else {
-
     }
-
-
   });
   const modal_add = document.getElementById("modal_add");
   const modal_edit = document.getElementById("modal_edit");
@@ -277,27 +259,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+  // Работа с хэшем 
 
+  async function hashCheck() {
+
+    const hash = location.hash.slice(1);
+
+    const response = await fetch(`http://localhost:3000/api/customers/${hash}`)
+    const customer = await response.json();
+
+    if (customer.message == 'Customer Not Found') {
+      const modal_info = document.querySelector('#modal_info');
+      infoModal('Пользователь не найден', 'в хэше недействительный ID');
+      modal_info.style.visibility = 'visible';
+      modal_info.style.opacity = '1';
+    } else {
+      changeCustomer(hash);
+    }
+
+
+
+  }
+
+  if (location.hash.length != 0) {
+    hashCheck();
+  }
+
+
+  window.addEventListener('hashchange', () => {
+    hashCheck();
+  });
 
 
 });
 function infoModal(header, text, mode = 'norm') {
-
-
-
   const modal_info = document.getElementById("modal_info");
   const form = document.querySelector('.form-info');
   modal_info.style.display = 'block';
   document.querySelector('#info_header').innerText = header;
-  console.log(form.children.length);
   let length = form.children.length;
 
   //Очистка формы
   if (length > 0) {
     for (let i = 0; i < length; i++) {
-      console.log('ERASING');
-      console.log(form.children);
-      console.log(form.children[0]);
       form.children[0].remove();
     }
   }
@@ -332,7 +336,6 @@ function removeContact() {
 }
 
 function deleteContact(id) {
-
 
   document.getElementById(`${id.id}`).remove();
 
@@ -631,9 +634,12 @@ async function changeCustomer(id) {
       }
     });
     const customer = await response.json();
-    console.log(customer);
     if (customer.hasOwnProperty("errors")) {
+      const modal_info = document.querySelector('#modal_info');
       infoModal('Ошибка!', customer);
+      modal_info.style.visibility = 'visible';
+      modal_info.style.opacity = '1';
+
     } else {
 
       removeContact();
@@ -682,7 +688,6 @@ function cleaningTable() {
 
 
 async function renderCustomerTable() {
-  console.log(document.querySelector("main_body"));
 
   function response(url = 'http://localhost:3000/api/customers') {
     let currentRetry = 0;
@@ -717,17 +722,10 @@ async function renderCustomerTable() {
 
 
   const err = await response();
-  console.log(err);
   if (err != undefined) {
     const response = await fetch('http://localhost:3000/api/customers');
     document.querySelector(".spinner").style.display = 'none';
     let customerList = await response.json();
-    // console.log(response);
-
-
-
-
-
 
 
     document.querySelector('#id_sort').children[0].attributes['opacity'].value = 1;
@@ -774,7 +772,6 @@ function sortData(type) {
       arrayTable.push(table.children[i].children[0].innerText);
     }
 
-    console.log(arrayTable);
     document.querySelector('#id_sort').children[0].attributes['opacity'].value = 1;
     document.querySelector('#sort_id').style.color = '#9873FF';
     document.querySelector('#fio_sort').children[0].attributes['opacity'].value = 0.5;
@@ -790,7 +787,6 @@ function sortData(type) {
     if (document.querySelector('#id_sort').attributes.sort.value == 'up') {
       document.querySelector('#id_sort').children[0].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
       function sortTable() {
-        console.log('start');
         let table, rows, switching, i, x, y, shouldSwitch;
         table = document.querySelector('#table_data');
         switching = true;
@@ -820,7 +816,6 @@ function sortData(type) {
       document.querySelector('#id_sort').children[0].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
 
       function sortTable() {
-        console.log('start');
         let table, rows, switching, i, x, y, shouldSwitch;
         table = document.querySelector('#table_data');
         switching = true;
@@ -848,12 +843,6 @@ function sortData(type) {
 
     }
 
-
-
-
-
-
-    console.log(arrayTable);
   } else if (type == 'fio_sort') {
 
     document.querySelector('#id_sort').children[0].attributes['opacity'].value = 0.5;
@@ -868,7 +857,6 @@ function sortData(type) {
     if (document.querySelector('#fio_sort').attributes.sort.value == 'up') {
       document.querySelector('#fio_sort').children[0].children[1].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
       function sortTable() {
-        console.log('start');
         let table, rows, switching, i, x, y, shouldSwitch;
         table = document.querySelector('#table_data');
         switching = true;
@@ -881,7 +869,6 @@ function sortData(type) {
             y = rows[i + 1].getElementsByTagName("TH")[0];
 
             if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-              console.log('oppo');
               shouldSwitch = true;
               break;
             }
@@ -900,7 +887,6 @@ function sortData(type) {
     } else if (document.querySelector('#fio_sort').attributes.sort.value == 'down') {
       document.querySelector('#fio_sort').children[0].children[1].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
       function sortTable() {
-        console.log('start');
         let table, rows, switching, i, x, y, shouldSwitch;
         table = document.querySelector('#table_data');
         switching = true;
@@ -913,7 +899,6 @@ function sortData(type) {
             y = rows[i + 1].getElementsByTagName("TH")[0];
 
             if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-              console.log('oppo2');
               shouldSwitch = true;
               break;
             }
@@ -943,7 +928,6 @@ function sortData(type) {
 
       document.querySelector('#date_now_sort').children[0].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
       function sortTable() {
-        console.log('start');
         let table, rows, switching, i, x, y, shouldSwitch;
         table = document.querySelector('#table_data');
         switching = true;
@@ -956,7 +940,6 @@ function sortData(type) {
             y = rows[i + 1].getElementsByTagName("TD")[1].children[0];
 
             if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-              console.log('oppo');
               shouldSwitch = true;
               break;
             }
@@ -973,7 +956,6 @@ function sortData(type) {
 
       document.querySelector('#date_now_sort').children[0].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
       function sortTable() {
-        console.log('start');
         let table, rows, switching, i, x, y, shouldSwitch;
         table = document.querySelector('#table_data');
         switching = true;
@@ -986,7 +968,6 @@ function sortData(type) {
             y = rows[i + 1].getElementsByTagName("TD")[1].children[0];
 
             if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-              console.log('oppo');
               shouldSwitch = true;
               break;
             }
@@ -1017,7 +998,6 @@ function sortData(type) {
     if (document.querySelector('#date_last_sort').attributes.sort.value == 'up') {
       document.querySelector('#date_last_sort').children[0].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
       function sortTable() {
-        console.log('start');
         let table, rows, switching, i, x, y, shouldSwitch;
         table = document.querySelector('#table_data');
         switching = true;
@@ -1030,7 +1010,6 @@ function sortData(type) {
             y = rows[i + 1].getElementsByTagName("TH")[1].children[0];
 
             if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-              console.log('oppo');
               shouldSwitch = true;
               break;
             }
@@ -1046,7 +1025,6 @@ function sortData(type) {
     } else if (document.querySelector('#date_last_sort').attributes.sort.value == 'down') {
       document.querySelector('#date_last_sort').children[0].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
       function sortTable() {
-        console.log('start');
         let table, rows, switching, i, x, y, shouldSwitch;
         table = document.querySelector('#table_data');
         switching = true;
@@ -1059,7 +1037,6 @@ function sortData(type) {
             y = rows[i + 1].getElementsByTagName("TH")[1].children[0];
 
             if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-              console.log('oppo');
               shouldSwitch = true;
               break;
             }
@@ -1141,7 +1118,6 @@ async function saveInput() {
 
 
   const customerList = await response.json();
-  console.log(customerList);
 
   if (document.querySelector('#search_fio').value != '') {
     clearSort();
@@ -1177,7 +1153,6 @@ const search_func = debounce(() => saveInput());
 
 
 function clearSort() {
-  console.log('очистка');
   document.querySelector('#id_sort').children[0].attributes['opacity'].value = 1;
   document.querySelector('#id_sort').children[0].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
   document.querySelector('#sort_id').style.color = '#9873FF';
@@ -1191,3 +1166,5 @@ function clearSort() {
   document.querySelector('#date_last_sort').children[0].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
   document.querySelector('#sort_date_last').style.color = '#B0B0B0';
 }
+
+

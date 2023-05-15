@@ -190,7 +190,7 @@ input:required+.hint {
     position: relative;
     width: 16px;
     height: 26px;
-    margin-right: 12px;
+    margin-right: 10px;
     content: '';
     display: inline-block;
     background-repeat: no-repeat;
