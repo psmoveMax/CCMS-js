@@ -1157,7 +1157,6 @@ function clearSort() {
   document.querySelector('#id_sort').children[0].children[0].attributes.d.value = 'M2 6L2.705 6.705L5.5 3.915L5.5 10L6.5 10L6.5 3.915L9.29 6.71L10 6L6 2L2 6Z';
   document.querySelector('#sort_id').style.color = '#9873FF';
   document.querySelector('#fio_sort').children[0].attributes['opacity'].value = 0.5;
-  document.querySelector('#fio_sort').children[0].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
   document.querySelector('#sort_fio').style.color = '#B0B0B0';
   document.querySelector('#date_now_sort').children[0].attributes['opacity'].value = 0.5;
   document.querySelector('#date_now_sort').children[0].children[0].attributes.d.value = 'M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z';
